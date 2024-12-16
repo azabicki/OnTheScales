@@ -3,6 +3,8 @@
 
 ## Installation virtual environment
 
+_GravityLog_ is developed under `Python 3.11.2`.
+
 ### venv
 Install the virtual environment according to your OS:
 
