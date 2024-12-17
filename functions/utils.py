@@ -6,9 +6,16 @@ import functions.data as data
 
 def init_vars() -> None:
     """
-        initializes session_state variables on first run
+    Initializes session_state variables on first run.
+
+    Args:
+        None
+
+    Returns:
+        None
     """
 
+    # a collection of flags in a dict
     if "flags" not in st.session_state:
         st.session_state.flags = {
             "add": False,
@@ -29,7 +36,6 @@ def init_vars() -> None:
         else:
             st.session_state.user_idx = 0
 
-
     # get user data from user_db
     if "user_name" not in st.session_state:
         set_user_sessionstate()
@@ -49,6 +55,16 @@ def init_vars() -> None:
 
 
 def set_user_sessionstate() -> None:
+    """
+    Sets initial user session_state variables
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
+
     if st.session_state.user_idx is not None:
         # user data
         st.session_state.user_name = st.session_state.user_db.loc[st.session_state.user_idx, "name"]
@@ -74,10 +90,18 @@ def set_user_sessionstate() -> None:
         st.session_state.trend_start = "..."
         st.session_state.trend_range = "..."
 
+
 def create_menu() -> None:
     """
-        creates the left-side  menu
+    creates the left-side menu
+
+    Args:
+        None
+
+    Returns:
+        None
     """
+
     # title
     st.sidebar.title("GravityLog")
     st.sidebar.divider()
@@ -107,8 +131,15 @@ def create_menu() -> None:
 
 def default_style() -> None:
     """
-        defines defaults styling and layout settings
+    Defines defaults styling and layout settings.
+
+    Args:
+        None
+
+    Returns:
+        None
     """
+
     css = """
     <style>
         [data-testid="stSidebar"]{
@@ -120,13 +151,18 @@ def default_style() -> None:
     st.markdown(css, unsafe_allow_html=True)
 
 
-def h_spacer(height=0, sb=False) -> None:
+def h_spacer(height:int=0, sb:bool=False) -> None:
     """
-        inserts a horizontal space
+    Adds empty lines.
 
-        height: number of lines
-        sb: if true, inserts a line in the sidebar
+    Args:
+        height (int): Number of lines to add, defaults to 0
+        sb (bool): If True, adds lines to sidebar. If False, adds to main area, defaults to False
+
+    Returns:
+        None
     """
+
     for _ in range(height):
         if sb:
             st.sidebar.write("\n")

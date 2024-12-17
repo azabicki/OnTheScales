@@ -8,7 +8,24 @@ import functions.utils as utils
 
 def select_user(src: str, del_idx: int) -> None:
     """
-        select active user via selectbox and update the session_state variables wrt to the now active user
+    Updates the active user according to source:
+
+    "sidebar":
+        Selectbox in the sidebar changed: new user selected, change session state user
+
+    "deletion":
+        Delete button was used: deleted user was active, new user to be selected
+
+    When user changes:
+        - update session state user index/name/height/target/trend-data
+        - load db for selected user
+
+    Args:
+        src (str): Source of the call "sidebar" | "deletion"
+        del_idx (int): Index of the user deleted, determines new user selection
+
+    Returns:
+        None
     """
 
     match src:
@@ -54,20 +71,39 @@ def select_user(src: str, del_idx: int) -> None:
 
 def load_db() -> pd.DataFrame:
     """
-        loads the user database `data/users.csv`
+    Load the user database from CSV file.
+
+    Reads and returns the users.csv file which contains user profiles and settings.
+
+    Returns:
+        pd.DataFrame: DataFrame containing user data from users.csv
     """
+
     # return pd.read_csv(os.path.join("data", "usersBSK.csv"))
     return pd.read_csv(os.path.join("data", "users.csv"))
 
 
-def add(name, height, target) -> None:
+def add(name:str, height:int, target:int) -> None:
     """
-        add new user to database and create a new csv file for users measurements
+    Add a new user to the database and create a new CSV file for user measurements.
 
-        Args:
-            name (str): name of the user
-            height (int): height of the user
-            target (int): target weight of the user
+    Takes the user's name, height, and target weight, creates a new entry in the user database with default trend settings, and generates a blank measurement CSV file for the new user.
+
+    If the user name already exists, sets a flag and returns without making changes.
+
+    Args:
+        name (str): Name of the user to add
+        height (int): Height of the user in centimeters
+        target (int): Target weight of the user in kilograms
+
+    Returns:
+        None
+
+    Side Effects:
+        - Creates new user entry in users.csv
+        - Creates new blank CSV file for user measurements
+        - Updates session state user database
+        - Sets success/error flags in session state
     """
 
     # return if user already exists
@@ -104,9 +140,16 @@ def add(name, height, target) -> None:
     new_db.to_csv(os.path.join("data", name + ".csv"), index=False)
 
 
-def update_user():
+def update_user() -> None:
     """
-        update user's height and/or target, based on changes made manually to dataframe
+    Updates the data of a user in the user database.
+
+    Takes edited rows from the session state's user_edited dictionary,
+    applies them to the user database, and saves the updated data to the users.csv file.
+    Also updates the active user's height and target weight in session state if they were modified.
+
+    Returns:
+        None
     """
 
     # first, process edited cells and create temporary df
