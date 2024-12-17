@@ -3,7 +3,7 @@
 
 ## Installation virtual environment
 
-_GravityLog_ is developed under `Python 3.11.2`.
+_GravityLog_ is developed under `Python 3.11.2`. If you use venv/virutalenv, make sure Python is at least version `3.11.2`.
 
 ### venv
 Install the virtual environment according to your OS:
@@ -28,7 +28,7 @@ pip install -r requirements.txt
 
 ### Conda
 
-If you are using _*conda_, an environment.yml file is provided:
+If you are using _*conda_, an environment.yml file is provided, which also installs the required python version `3.11.2`:
 
 ```zsh
 conda env create -f environment.yml
