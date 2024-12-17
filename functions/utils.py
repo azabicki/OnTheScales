@@ -18,6 +18,7 @@ def init_vars() -> None:
             "usr_add_exists": False,
             "usr_update_ok": False,
             "usr_update_exists": False,
+            "usr_del_ok": False,
         }
 
     # load user database
@@ -31,31 +32,7 @@ def init_vars() -> None:
 
     # get user data from user_db
     if "user_name" not in st.session_state:
-        if st.session_state.user_idx is not None:
-            st.session_state.user_name = st.session_state.user_db.loc[st.session_state.user_idx, "name"]
-            st.session_state.user_cm = st.session_state.user_db.loc[st.session_state.user_idx, "height"]
-            st.session_state.user_kg = st.session_state.user_db.loc[st.session_state.user_idx, "target"]
-        else:
-            st.session_state.user_name = ""
-            st.session_state.user_cm = None
-            st.session_state.user_kg = None
-
-    # get user's trend settings from user_db
-    if "trend_how" not in st.session_state:
-        if st.session_state.user_idx is not None:
-            st.session_state.trend_how = st.session_state.user_db.loc[st.session_state.user_idx, "trend_how"]
-            st.session_state.trend_start = st.session_state.user_db.loc[st.session_state.user_idx, "trend_start"]
-            st.session_state.trend_range = st.session_state.user_db.loc[st.session_state.user_idx, "trend_range"]
-        else:
-            st.session_state.trend_how = ""
-            st.session_state.trend_start = ""
-            st.session_state.trend_range = ""
-
-        print("init how: ", st.session_state.trend_how)
-        print("init start: ", st.session_state.trend_start)
-        print("          : ", type(st.session_state.trend_start))
-        print("init range: ", st.session_state.trend_range)
-        print("          : ", type(st.session_state.trend_range))
+        set_user_sessionstate()
 
     # load data_db for current user / or create empty db
     if "db" not in st.session_state:
@@ -70,6 +47,32 @@ def init_vars() -> None:
     # if "bc_in_kg" not in st.session_state:
     #     st.session_state.bc_in_kg = "%"
 
+
+def set_user_sessionstate() -> None:
+    if st.session_state.user_idx is not None:
+        # user data
+        st.session_state.user_name = st.session_state.user_db.loc[st.session_state.user_idx, "name"]
+        st.session_state.user_cm = st.session_state.user_db.loc[st.session_state.user_idx, "height"]
+        st.session_state.user_kg = st.session_state.user_db.loc[st.session_state.user_idx, "target"]
+
+        # trend settings
+        st.session_state.trend_how = st.session_state.user_db.loc[st.session_state.user_idx, "trend_how"]
+        st.session_state.trend_start = st.session_state.user_db.loc[st.session_state.user_idx, "trend_start"]
+        st.session_state.trend_range = st.session_state.user_db.loc[st.session_state.user_idx, "trend_range"]
+
+        print("init how: ", st.session_state.trend_how)
+        print("init start: ", st.session_state.trend_start)
+        print("          : ", type(st.session_state.trend_start))
+        print("init range: ", st.session_state.trend_range)
+        print("          : ", type(st.session_state.trend_range))
+    else:
+        # when no user in user_db
+        st.session_state.user_name = "..."
+        st.session_state.user_cm = None
+        st.session_state.user_kg = None
+        st.session_state.trend_how = "..."
+        st.session_state.trend_start = "..."
+        st.session_state.trend_range = "..."
 
 def create_menu() -> None:
     """
@@ -90,7 +93,8 @@ def create_menu() -> None:
         index=st.session_state.user_idx,
         key="sb_user",
         on_change=user.select_user,
-        placeholder="add new user"
+        args=('sidebar', None),
+        placeholder="add new user" if len(st.session_state.user_db) == 0 else "select user"
     )
     st.sidebar.divider()
 

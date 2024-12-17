@@ -3,26 +3,53 @@ from datetime import datetime
 import streamlit as st
 import pandas as pd
 import functions.data as data
+import functions.utils as utils
 
 
-def select_user():
+def select_user(src: str, del_idx: int) -> None:
     """
         select active user via selectbox and update the session_state variables wrt to the now active user
     """
-    print("___ user from selectbox: ", st.session_state["sb_user"])
+
+    match src:
+        # from sidebar
+        case "sidebar":
+            idx = st.session_state["sb_user"]
+
+        # from sidebar
+        case "deletion":
+
+            # last user deleted
+            if len(st.session_state.user_db) == 0:
+                idx = None
+
+            # deleted used was ABOVE active
+            elif del_idx <  st.session_state.user_idx:
+                idx = st.session_state.user_idx-1
+
+            # deleted used was UNDER active
+            elif del_idx > st.session_state.user_idx:
+                idx = st.session_state.user_idx
+
+            # deleted user was EQUAL active
+            else:
+                nUser = len(st.session_state.user_db)-1
+                idx = del_idx if del_idx < nUser else nUser
+
+        case _:
+            idx = None
+
     # update user
-    st.session_state.user_idx = st.session_state["sb_user"]
+    st.session_state.user_idx = idx
 
     # update user settings
-    st.session_state.user_name = st.session_state.user_db.loc[st.session_state.user_idx, "name"]
-    st.session_state.user_cm = st.session_state.user_db.loc[st.session_state.user_idx, "height"]
-    st.session_state.user_kg = st.session_state.user_db.loc[st.session_state.user_idx, "target"]
-    st.session_state.trend_how = st.session_state.user_db.loc[st.session_state.user_idx, "trend_how"]
-    st.session_state.trend_start = st.session_state.user_db.loc[st.session_state.user_idx, "trend_start"]
-    st.session_state.trend_range = st.session_state.user_db.loc[st.session_state.user_idx, "trend_range"]
+    utils.set_user_sessionstate()
 
     # load user db
-    st.session_state.db = data.load()
+    if st.session_state.user_idx is not None:
+        st.session_state.db = data.load()
+    else:
+        st.session_state.db = data.create_df()
 
 
 def load_db() -> pd.DataFrame:
@@ -100,3 +127,38 @@ def update_user():
     st.session_state.user_db.to_csv(os.path.join("data", "users.csv"), index=False)
 
 
+
+def delete(idx: int|None) -> None:
+    """
+    Deletes a user from the user database and removes their csv file.
+
+    Args:
+        idx (int|None): Index of user to delete in the user database dataframe.
+            If None, resets session state variables and returns.
+
+    Returns:
+        None
+    """
+
+    # if idx is None, reset session state variables and return
+    if idx is None:
+        st.session_state.sb_user_delete = None
+        return
+
+    # remove user's data csv file
+    os.remove(os.path.join("data", st.session_state.user_db.loc[idx, "name"] + ".csv"))
+
+    # delete user from user_db
+    print(st.session_state.user_db)
+    st.session_state.user_db = st.session_state.user_db.drop(idx).reset_index(drop=True)
+    print(st.session_state.user_db)
+
+    # save users.csv
+    st.session_state.user_db.to_csv(os.path.join("data", "users.csv"), index=False)
+
+    # handle 'active user' when deleted user was active user
+    print("___handle active user, deleted: ", idx)
+    select_user(src="deletion", del_idx=idx)
+
+    # set flag
+    st.session_state.flags["usr_del_ok"] = True

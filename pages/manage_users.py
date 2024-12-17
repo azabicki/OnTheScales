@@ -108,3 +108,71 @@ with st.container(border=True):
         time.sleep(2)
         container_add.empty()
 
+# delete users ----------------------------------------------------------------
+ut.h_spacer(2)
+st.subheader("Delete User")
+with st.container(border=True):
+    col_del_sb, col_del_btn = st.columns([1, 1], gap="medium")
+    # select box
+    with col_del_sb:
+        usr_idx = [i for i, _ in st.session_state.user_db.iterrows()]
+        usr_name = [r["name"] for i, r in st.session_state.user_db.iterrows()]
+
+        st.selectbox(
+            "select user:",
+            label_visibility="collapsed",
+            options=usr_idx,
+            format_func=lambda i: usr_name[i],
+            key="sb_user_delete",
+            placeholder="...",
+            index=None
+        )
+
+    # submit button inside a popover
+    with col_del_btn:
+        with st.popover(
+                "delete user",
+                use_container_width=True,
+                icon="🚨",
+                disabled=True if st.session_state.sb_user_delete is None else False):
+
+            # last question
+            st.subheader(f"Are you sure to delete _'{usr_name[st.session_state.sb_user_delete] if st.session_state.sb_user_delete is not None else ''}'_?")
+            st.caption("This is not reversible and all data will be lost! Maybe consider __exporting__ the data first?")
+
+            col_b1, col_b2 = st.columns([1, 1], gap="small")
+            # abort button
+            with col_b1:
+                submitted_abort = st.button(
+                    "nope... stop it!",
+                    type="secondary",
+                    use_container_width=True,
+                    on_click=user.delete,
+                    args=(None, ),
+                    disabled=True if st.session_state.sb_user_delete is None else False
+                )
+            # delete button !
+            with col_b2:
+                submitted_del = st.button(
+                    "YES! LET'S DO IT!",
+                    type="primary",
+                    icon="🔥",
+                    use_container_width=True,
+                    on_click=user.delete,
+                    args=(st.session_state.sb_user_delete, ),
+                    disabled=True if st.session_state.sb_user_delete is None else False
+                )
+
+    # placeholder for feedback
+    container_del = st.empty()
+
+    # flag submission & rerun
+    if submitted_del or submitted_abort:
+        st.rerun()
+
+    # show feedback
+    if st.session_state.flags["usr_del_ok"]:
+        st.session_state.flags["usr_del_ok"] = False
+        container_del.success("User **deleted**")
+        time.sleep(1)
+        container_del.empty()
