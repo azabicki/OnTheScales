@@ -8,6 +8,48 @@ ut.init_vars()
 ut.default_style()
 ut.create_menu()
 
+# update users ----------------------------------------------------------------
+st.subheader("Manage Users")
+st.markdown("Edit the fields accordingly and press [enter].")
+edited_user = st.data_editor(
+    st.session_state.user_db,
+    use_container_width=True,
+    hide_index=True,
+    num_rows="fixed",
+    column_order=("name", "height", "target"),
+    column_config={
+        "name": st.column_config.Column(label="Name", disabled=True),
+        "height": st.column_config.NumberColumn(
+            label="Height", format="%d cm", required=True, min_value=0, max_value=250
+        ),
+        "target": st.column_config.NumberColumn(
+            label="Target Weight",
+            format="%d kg",
+            required=True,
+            min_value=0,
+            max_value=200,
+        ),
+    },
+    on_change=user.update_user,
+    key="user_edited"
+)
+
+# placeholder for feedback
+container_update = st.empty()
+
+# show feedback
+if st.session_state.flags["usr_update_ok"]:
+    st.session_state.flags["usr_update_ok"] = False
+    container_update.success("User **updated**")
+    time.sleep(2)
+    container_update.empty()
+
+if st.session_state.flags["usr_update_exists"]:
+    st.session_state.flags["usr_update_exists"] = False
+    container_update.error("User name already in database")
+    time.sleep(2)
+    container_update.empty()
+    st.rerun()
 
 
 # add users -------------------------------------------------------------------
@@ -45,7 +87,7 @@ with st.container(border=True):
             args=(name, height, target)
         )
 
-    # placeholder forfeedback
+    # placeholder for feedback
     with col_fdb:
         container_add = st.empty()
 
@@ -53,15 +95,16 @@ with st.container(border=True):
     if submitted_add:
         st.rerun()
 
-# display messages ------------------------------------------------------------
-if st.session_state.flags["usr_add_ok"]:
-    st.session_state.flags["usr_add_ok"] = False
-    container_add.success("User **added**")
-    time.sleep(2)
-    container_add.empty()
+    # show feedback
+    if st.session_state.flags["usr_add_ok"]:
+        st.session_state.flags["usr_add_ok"] = False
+        container_add.success("User **added**")
+        time.sleep(2)
+        container_add.empty()
 
-if st.session_state.flags["usr_add_exists"]:
-    st.session_state.flags["usr_add_exists"] = False
-    container_add.error("User already in database")
-    time.sleep(2)
-    container_add.empty()
+    if st.session_state.flags["usr_add_exists"]:
+        st.session_state.flags["usr_add_exists"] = False
+        container_add.error("User already in database")
+        time.sleep(2)
+        container_add.empty()
+

@@ -16,6 +16,8 @@ def init_vars() -> None:
             "del": False,
             "usr_add_ok": False,
             "usr_add_exists": False,
+            "usr_update_ok": False,
+            "usr_update_exists": False,
         }
 
     # load user database

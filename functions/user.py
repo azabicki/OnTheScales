@@ -48,8 +48,10 @@ def add(name, height, target) -> None:
         st.session_state.flags["usr_add_exists"] = True
         return
 
-    # reset session state variables
+    # set flag
     st.session_state.flags["usr_add_ok"] = True
+
+    # reset session state variables
     st.session_state["new_usr_name"] = ""
     st.session_state["new_usr_height"] = 180
     st.session_state["new_usr_target"] = 80
@@ -73,3 +75,28 @@ def add(name, height, target) -> None:
     # create new csv for new user
     new_db = data.create_df()
     new_db.to_csv(os.path.join("data", name + ".csv"), index=False)
+
+
+def update_user():
+    """
+        update user's height and/or target, based on changes made manually to dataframe
+    """
+
+    # first, process edited cells and create temporary df
+    st.session_state.user_db = st.session_state.user_db.copy()
+    edt = st.session_state.user_edited["edited_rows"]
+    for idx, dct in edt.items():
+        for col, val in dct.items():
+            st.session_state.user_db.loc[idx, col] = val
+
+    # set flag
+    st.session_state.flags["usr_update_ok"] = True
+
+    # update user_db and user_data in session_state
+    st.session_state.user_cm = st.session_state.user_db.loc[st.session_state.user_idx, "height"]
+    st.session_state.user_kg = st.session_state.user_db.loc[st.session_state.user_idx, "target"]
+
+    # save users.csv
+    st.session_state.user_db.to_csv(os.path.join("data", "users.csv"), index=False)
+
+
