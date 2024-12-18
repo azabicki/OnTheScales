@@ -44,13 +44,6 @@ if st.session_state.flags["usr_update_ok"]:
     time.sleep(2)
     container_update.empty()
 
-if st.session_state.flags["usr_update_exists"]:
-    st.session_state.flags["usr_update_exists"] = False
-    container_update.error("User name already in database")
-    time.sleep(2)
-    container_update.empty()
-    st.rerun()
-
 
 # add users -------------------------------------------------------------------
 ut.h_spacer(2)

@@ -24,7 +24,6 @@ def init_vars() -> None:
             "usr_add_ok": False,
             "usr_add_exists": False,
             "usr_update_ok": False,
-            "usr_update_exists": False,
             "usr_del_ok": False,
         }
 
