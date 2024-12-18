@@ -192,15 +192,12 @@ def delete(idx: int|None) -> None:
     os.remove(os.path.join("data", st.session_state.user_db.loc[idx, "name"] + ".csv"))
 
     # delete user from user_db
-    print(st.session_state.user_db)
     st.session_state.user_db = st.session_state.user_db.drop(idx).reset_index(drop=True)
-    print(st.session_state.user_db)
 
     # save users.csv
     st.session_state.user_db.to_csv(os.path.join("data", "users.csv"), index=False)
 
-    # handle 'active user' when deleted user was active user
-    print("___handle active user, deleted: ", idx)
+    # handle 'active user' when user was deleted
     select_user(src="deletion", input_idx=idx)
 
     # set flag
