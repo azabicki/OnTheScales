@@ -33,7 +33,14 @@ def select_user(src: str, input_idx: int) -> None:
         case "sidebar":
             idx = st.session_state["sb_user"]
 
-        # from sidebar
+        # after adding new user
+        case "adding":
+            if st.session_state.user_idx is None:
+                idx = 0
+            else:
+                idx = st.session_state.user_idx
+
+        # after deletion
         case "deletion":
 
             # last user deleted
@@ -56,8 +63,9 @@ def select_user(src: str, input_idx: int) -> None:
         case _:
             idx = None
 
-    # update user
+    # update user + selectbox in menu
     st.session_state.user_idx = idx
+    st.session_state.sb_user = idx
 
     # update user settings
     utils.set_user_sessionstate()
@@ -138,6 +146,9 @@ def add(name:str, height:int, target:int) -> None:
     # create new csv for new user
     new_db = data.create_df()
     new_db.to_csv(os.path.join("data", name + ".csv"), index=False)
+
+    # handle 'active user' when user was added
+    select_user(src="adding", input_idx=0)
 
 
 def update_user() -> None:
