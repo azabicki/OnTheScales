@@ -138,6 +138,7 @@ def add(name:str, height:int, target:int) -> None:
 
     # add row to users_db
     st.session_state.user_db = pd.concat([st.session_state.user_db, new_user], ignore_index=True)
+    st.session_state.user_db["trend_start"] = pd.to_datetime(st.session_state.user_db["trend_start"])
 
     # save users.csv
     st.session_state.user_db.to_csv(os.path.join("data", "users.csv"), index=False)
