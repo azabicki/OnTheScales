@@ -91,7 +91,7 @@ with st.container(border=True):
     with col_fdb:
         container_add = st.empty()
 
-    # flag submission & rerun
+    # rerun when button pressed
     if submitted_add:
         st.rerun()
 
@@ -166,7 +166,7 @@ with st.container(border=True):
     # placeholder for feedback
     container_del = st.empty()
 
-    # flag submission & rerun
+    # rerun when button pressed
     if submitted_del or submitted_abort:
         st.rerun()
 

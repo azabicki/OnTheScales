@@ -1,9 +1,9 @@
 import os
-from datetime import datetime
-import streamlit as st
 import pandas as pd
+import streamlit as st
+from datetime import datetime
 import functions.data as data
-import functions.utils as utils
+import functions.utils as ut
 
 
 def select_user(src: str, input_idx: int) -> None:
@@ -68,7 +68,7 @@ def select_user(src: str, input_idx: int) -> None:
     st.session_state.sb_user = idx
 
     # update user settings
-    utils.set_user_sessionstate()
+    ut.set_user_sessionstate()
 
     # load user db
     if st.session_state.user_idx is not None:
