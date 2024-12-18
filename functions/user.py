@@ -72,7 +72,7 @@ def select_user(src: str, input_idx: int) -> None:
 
     # load user db
     if st.session_state.user_idx is not None:
-        st.session_state.db = data.load()
+        st.session_state.db = data.load_db()
     else:
         st.session_state.db = data.create_df()
 

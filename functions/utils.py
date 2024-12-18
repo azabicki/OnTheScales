@@ -18,9 +18,9 @@ def init_vars() -> None:
     # a collection of flags in a dict
     if "flags" not in st.session_state:
         st.session_state.flags = {
-            "add": False,
-            "add_new": False,
-            "del": False,
+            "data_add": False,
+            "data_upd": False,
+            "data_del": False,
             "usr_add_ok": False,
             "usr_add_exists": False,
             "usr_update_ok": False,
@@ -43,7 +43,7 @@ def init_vars() -> None:
     # load data_db for current user / or create empty db
     if "db" not in st.session_state:
         if st.session_state.user_idx is not None:
-            st.session_state.db = data.load()
+            st.session_state.db = data.load_db()
         else:
             st.session_state.db = data.create_df()
 
@@ -76,11 +76,6 @@ def set_user_sessionstate() -> None:
         st.session_state.trend_start = st.session_state.user_db.loc[st.session_state.user_idx, "trend_start"]
         st.session_state.trend_range = st.session_state.user_db.loc[st.session_state.user_idx, "trend_range"]
 
-        print("init how: ", st.session_state.trend_how)
-        print("init start: ", st.session_state.trend_start)
-        print("          : ", type(st.session_state.trend_start))
-        print("init range: ", st.session_state.trend_range)
-        print("          : ", type(st.session_state.trend_range))
     else:
         # when no user in user_db
         st.session_state.user_name = "..."
