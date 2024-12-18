@@ -47,11 +47,12 @@ def init_vars() -> None:
         else:
             st.session_state.db = data.create_df()
 
-    # if "graph_main_style" not in st.session_state:
-    #     st.session_state.graph_main_style = "lines"
+    if "fig_main_style" not in st.session_state:
+        st.session_state.fig_main_style = "lines"
 
-    # if "bc_in_kg" not in st.session_state:
-    #     st.session_state.bc_in_kg = "%"
+    if "fig_body_comp" not in st.session_state:
+        st.session_state.fig_body_comp = "%"
+
 
 
 def set_user_sessionstate() -> None:
