@@ -6,7 +6,7 @@ import functions.data as data
 import functions.utils as utils
 
 
-def select_user(src: str, del_idx: int) -> None:
+def select_user(src: str, input_idx: int) -> None:
     """
     Updates the active user according to source:
 
@@ -41,17 +41,17 @@ def select_user(src: str, del_idx: int) -> None:
                 idx = None
 
             # deleted used was ABOVE active
-            elif del_idx <  st.session_state.user_idx:
+            elif input_idx <  st.session_state.user_idx:
                 idx = st.session_state.user_idx-1
 
             # deleted used was UNDER active
-            elif del_idx > st.session_state.user_idx:
+            elif input_idx > st.session_state.user_idx:
                 idx = st.session_state.user_idx
 
             # deleted user was EQUAL active
             else:
                 nUser = len(st.session_state.user_db)-1
-                idx = del_idx if del_idx < nUser else nUser
+                idx = input_idx if input_idx < nUser else nUser
 
         case _:
             idx = None
@@ -201,7 +201,7 @@ def delete(idx: int|None) -> None:
 
     # handle 'active user' when deleted user was active user
     print("___handle active user, deleted: ", idx)
-    select_user(src="deletion", del_idx=idx)
+    select_user(src="deletion", input_idx=idx)
 
     # set flag
     st.session_state.flags["usr_del_ok"] = True
