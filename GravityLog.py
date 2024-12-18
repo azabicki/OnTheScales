@@ -45,7 +45,7 @@ with st.container(border=True):
     # plot trend
     st.plotly_chart(fig_trend, use_container_width=True, config = {'displayModeBar': False}, key="fig_trend")
 
-    with st.popover("trend settings"):
+    with st.popover("🛠️ trend options"):
         # radio button to select how to define starting point
         st.radio(
             "trend based on",

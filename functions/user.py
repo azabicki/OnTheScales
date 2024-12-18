@@ -83,7 +83,7 @@ def load_db() -> pd.DataFrame:
     Returns:
         pd.DataFrame: DataFrame containing user data from users.csv
     """
-    # db = pd.read_csv(os.path.join("data", "usersBSK.csv"))
+
     db = pd.read_csv(os.path.join("data", "users.csv"))
     db["trend_start"] = pd.to_datetime(db["trend_start"])
 
