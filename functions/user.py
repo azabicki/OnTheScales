@@ -35,10 +35,7 @@ def select_user(src: str, input_idx: int) -> None:
 
         # after adding new user
         case "adding":
-            if st.session_state.user_idx is None:
-                idx = 0
-            else:
-                idx = st.session_state.user_idx
+            idx = st.session_state.user_db.shape[0]-1
 
         # after deletion
         case "deletion":
