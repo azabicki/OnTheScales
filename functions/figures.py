@@ -143,6 +143,13 @@ def main() -> go.Figure:
 
 
 def trend() -> tuple[go.Figure, float]:
+    # instantiate figure
+    fig = go.Figure()
+
+    # return if no measurements stored
+    if st.session_state.db.shape[0] == 0:
+        return fig, 0
+
     print(" > how: ", st.session_state.trend_how)
     # get dates for x_axis based on trend_how
     if st.session_state.trend_how == "start date":
@@ -228,9 +235,6 @@ def trend() -> tuple[go.Figure, float]:
         db_data["date"].iloc[0] - pd.Timedelta(weeks=1),
         pred_date[-1],
     ]
-
-    # instantiate figure
-    fig = go.Figure()
 
     # return if no measurements stored
     if st.session_state.db.shape[0] == 0:
