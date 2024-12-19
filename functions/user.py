@@ -181,6 +181,24 @@ def update_user() -> None:
     st.session_state.user_db.to_csv(os.path.join("data", "users.csv"), index=False)
 
 
+def update_trend() -> None:
+    """
+    Updates trend settings for the current user.
+
+    Takes trend settings from session state (how/start/range) and updates them in the user database, then saves to users.csv.
+
+    Returns:
+        None
+    """
+
+    # update user_db session_state
+    st.session_state.user_db.loc[st.session_state.user_idx, "trend_how"] = st.session_state.trend_how
+    st.session_state.user_db.loc[st.session_state.user_idx, "trend_start"] = pd.to_datetime(st.session_state.trend_start)
+    st.session_state.user_db.loc[st.session_state.user_idx, "trend_range"] = st.session_state.trend_range
+
+    # save users.csv
+    st.session_state.user_db.to_csv(os.path.join("data", "users.csv"), index=False)
+
 
 def delete(idx: int|None) -> None:
     """

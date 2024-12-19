@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import functions.utils as ut
+import functions.user as user
 import functions.figures as fgs
 
 # init default values
@@ -51,23 +52,26 @@ with st.container(border=True):
             "trend based on",
             ["start date", "date range"],
             key="trend_how",
+            on_change=user.update_trend
         )
 
         # select _start date_
-        if st.session_state.trend_how == "start date":
-            st.date_input(
-                "select 'start date'",
-                format="YYYY-MM-DD",
-                key="trend_start",
-            )
+        st.date_input(
+            "select 'start date'",
+            format="YYYY-MM-DD",
+            key="trend_start",
+            # disabled=False if st.session_state.trend_how == "start date" else True,
+            on_change=user.update_trend
+        )
 
         # select _date range_
-        elif st.session_state.trend_how == "date range":
-            weeks = np.array([4, 8, 12, 16, 20, 24], dtype=np.int64)
-            st.selectbox(
-                "select 'range'",
-                weeks,
-                format_func=lambda x: str(x) + " weeks = " + str(x // 4) + " months",
-                key="trend_range",
-            )
+        weeks = np.array([4, 8, 12, 16, 20, 24], dtype=np.int64)
+        st.selectbox(
+            "select 'range'",
+            weeks,
+            format_func=lambda x: str(x) + " weeks = " + str(x // 4) + " months",
+            key="trend_range",
+            # disabled=False if st.session_state.trend_how == "date range" else True,
+            on_change=user.update_trend
+        )
 
