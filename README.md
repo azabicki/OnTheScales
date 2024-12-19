@@ -3,7 +3,7 @@
 
 ## Installation virtual environment
 
-_GravityLog_ is developed under `Python 3.11.2`. If you use venv/virutalenv, make sure Python is at least version `3.11.2`.
+_GravityLog_ is written in `Python 3.11.2`.
 
 ### venv
 Install the virtual environment according to your OS:
