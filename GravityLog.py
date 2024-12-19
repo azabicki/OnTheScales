@@ -52,31 +52,35 @@ with st.container(border=True):
     st.plotly_chart(fig_trend, use_container_width=True, config = {'displayModeBar': False}, key="fig_trend")
 
     with st.popover("🛠️ trend options"):
-        # radio button to select how to define starting point
-        st.radio(
-            "trend based on",
-            ["start date", "date range"],
-            key="trend_how",
-            on_change=user.update_trend
-        )
+        col_trend = st.columns(2, gap="small")
+        with col_trend[0]:
+            # radio button to select how to define starting point
+            st.radio(
+                "trend based on",
+                ["start date", "date range"],
+                key="trend_how",
+                on_change=user.update_trend
+            )
 
         # select _start date_
-        st.date_input(
-            "select 'start date'",
-            format="YYYY-MM-DD",
-            key="trend_start",
-            # disabled=False if st.session_state.trend_how == "start date" else True,
-            on_change=user.update_trend
-        )
+        with col_trend[1]:
+            if st.session_state.trend_how == "start date":
+                st.date_input(
+                    "select 'start date'",
+                    format="DD.MM.YYYY",
+                    key="trend_start",
+                    disabled=False if st.session_state.trend_how == "start date" else True,
+                    on_change=user.update_trend
+                )
 
-        # select _date range_
-        weeks = np.array([4, 8, 12, 16, 20, 24], dtype=np.int64)
-        st.selectbox(
-            "select 'range'",
-            weeks,
-            format_func=lambda x: str(x) + " weeks = " + str(x // 4) + " months",
-            key="trend_range",
-            # disabled=False if st.session_state.trend_how == "date range" else True,
-            on_change=user.update_trend
-        )
+            # select _date range_
+            if st.session_state.trend_how == "date range":
+                st.selectbox(
+                    "select 'range'",
+                    [4, 8, 12, 16, 20, 24],
+                    format_func=lambda x: str(x) + " weeks",
+                    key="trend_range",
+                    disabled=False if st.session_state.trend_how == "date range" else True,
+                    on_change=user.update_trend
+                )
 
