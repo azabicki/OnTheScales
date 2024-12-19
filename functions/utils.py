@@ -48,10 +48,10 @@ def init_vars() -> None:
 
     if "fig_main_style" not in st.session_state:
         st.session_state.fig_main_style = "lines"
-
-    if "fig_body_comp" not in st.session_state:
         st.session_state.fig_body_comp = "%"
 
+    if "debug" not in st.session_state:
+        st.session_state.debug = False
 
 
 def set_user_sessionstate() -> None:
@@ -179,7 +179,7 @@ def switch_page(page_name: str):
         return name.lower().replace("_", " ")
 
     page_name = standardize_name(page_name)
-    pages = get_pages("bots.py")  # OR whatever your main page is called
+    pages = get_pages("GravityLog.py")  # OR whatever your main page is called
 
     for page_hash, config in pages.items():
         if standardize_name(config["page_name"]) == page_name:

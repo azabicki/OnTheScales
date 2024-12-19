@@ -39,7 +39,7 @@ fig_trend, trend = fgs.trend()
 with st.container(border=True):
     # show current change rate of weight
     c1,c2,c3 = st.columns([1, 1, 1])
-    c1.markdown("**weight changes:**")
+    c1.markdown("**$\Delta$ Mass:**")
     c2.markdown(f"_{round(trend*10**9*60*60*24*7, 2)} kg/week_")
     c3.markdown(f"_{round(trend*10**9*60*60*24*30, 2)} kg/month_")
 
