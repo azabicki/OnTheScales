@@ -52,7 +52,9 @@ def init_vars() -> None:
 
     if "fig_main_style" not in st.session_state:
         st.session_state.fig_main_style = "lines"
-        st.session_state.fig_body_comp = "%"
+        st.session_state.fig_body_comp_type = "%"
+        st.session_state.fig_body_comp_weight = None
+        st.session_state.fig_body_comp_style = "lines"
 
     if "debug" not in st.session_state:
         st.session_state.debug = False

@@ -88,3 +88,38 @@ with st.container(border=True):
                     on_change=user.update_trend
                 )
 
+# ----- body composition figure -----
+ut.h_spacer(1)
+st.subheader("body composition")
+
+with st.container(border=True):
+    # draw figure
+    fig_body_comp = fgs.body_comp()
+    st.plotly_chart(fig_body_comp, use_container_width=True, config = {'displayModeBar': False}, key="fig_body_comp")
+
+    # add columns for figure options
+    col_body_comp = st.columns([2,3,2], gap="small")
+
+    # add selectbox for body composition
+    col_body_comp[0].segmented_control(
+        "body composition:",
+        options=["%", "kg"],
+        format_func=lambda x: "in " + x,
+        default="%",
+        key="fig_body_comp_type"
+    )
+
+    # add selectbox for figure styling
+    col_body_comp[1].segmented_control(
+        "data style:",
+        options=["lines", "markers", "both"],
+        default="lines",
+        key="fig_body_comp_style",
+    )
+
+    # add selectbox for adding weight
+    col_body_comp[2].segmented_control(
+        "showing:",
+        options=["weight & target"],
+        key="fig_body_comp_weight",
+    )

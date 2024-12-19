@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime, time
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 from sklearn.linear_model import LinearRegression as LinReg
 
 
@@ -357,3 +358,213 @@ def trend() -> tuple[go.Figure, float]:
     )
 
     return fig, trnd
+
+
+def body_comp():
+    # marker/line/body_comp mode
+    mode = (
+        "markers+lines"
+        if st.session_state["fig_body_comp_style"] == "both"
+        else st.session_state["fig_body_comp_style"]
+    )
+    bc_in_prc = st.session_state["fig_body_comp_type"] == "%"
+    show_wgt = st.session_state["fig_body_comp_weight"] == "weight & target"
+    second_y = bc_in_prc and show_wgt
+
+    # instantiate figure
+    if second_y:
+        fig = make_subplots(specs=[[{"secondary_y": True}]])
+    else:
+        fig = go.Figure()
+
+    # return if no measurements stored
+    if st.session_state.db.shape[0] == 0:
+        return fig
+
+    # add composites
+    for var in ["fat", "water", "muscle"]:
+        # convert into kg?
+        if bc_in_prc:
+            y = st.session_state.db[var]
+        else:
+            y = st.session_state.db["weight"] * st.session_state.db[var] / 100
+            y = y.round(1)
+
+        # plot
+        if second_y:
+            fig.add_trace(
+                go.Scatter(
+                    x=st.session_state.db["date"],
+                    y=y,
+                    showlegend=True,
+                    name=var,
+                    mode=mode,
+                    marker_size=5,
+                    line_width=3,
+                    line_color=clrs[var],
+                    legendgroup="%",
+                ),
+                secondary_y=False,
+            )
+        else:
+            fig.add_trace(
+                go.Scatter(
+                    x=st.session_state.db["date"],
+                    y=y,
+                    showlegend=True,
+                    name=var,
+                    mode=mode,
+                    marker_size=5,
+                    line_width=3,
+                    line_color=clrs[var],
+                    legendgroup="%",
+                )
+            )
+
+
+    # add _weight_ & _target_
+    if st.session_state["fig_body_comp_weight"] == "weight & target":
+        if second_y:
+            fig.add_trace(
+                go.Scatter(
+                    x=st.session_state.db["date"],
+                    y=st.session_state.db["weight"],
+                    showlegend=True,
+                    name="weight",
+                    mode=mode,
+                    line_width=1,
+                    line_color=clrs["weight"],
+                    marker_size=4,
+                    legendgroup="kg",
+                ),
+                secondary_y=bc_in_prc,
+            )
+
+            fig.add_trace(
+                go.Scatter(
+                    x=[
+                        list(st.session_state.db["date"])[0],
+                        list(st.session_state.db["date"])[-1],
+                    ],
+                    y=[st.session_state.user_kg, st.session_state.user_kg],
+                    showlegend=True,
+                    hoverinfo="skip",
+                    name="target",
+                    mode="lines",
+                    line_color="#595959",
+                    line_width=1,
+                    line_dash="dot",
+                    legendgroup="kg",
+                ),
+                secondary_y=bc_in_prc,
+            )
+        else:
+            fig.add_trace(
+                go.Scatter(
+                    x=st.session_state.db["date"],
+                    y=st.session_state.db["weight"],
+                    showlegend=True,
+                    name="weight",
+                    mode=mode,
+                    line_width=1,
+                    line_color=clrs["weight"],
+                    marker_size=6,
+                    legendgroup="kg",
+                )
+            )
+
+            fig.add_trace(
+                go.Scatter(
+                    x=[
+                        list(st.session_state.db["date"])[0],
+                        list(st.session_state.db["date"])[-1],
+                    ],
+                    y=[st.session_state.user_kg, st.session_state.user_kg],
+                    showlegend=True,
+                    hoverinfo="skip",
+                    name="target",
+                    mode="lines",
+                    line_color="#595959",
+                    line_width=1,
+                    line_dash="dot",
+                    legendgroup="kg",
+                )
+            )
+
+
+    # set some layout properties
+    fig.update_layout(
+        # height of figure
+        height=370,
+
+        # hovering
+        hovermode="x unified",
+        hoverlabel=dict(
+            font_size=12,
+            bgcolor="#fefefe"),
+
+        # margin
+        margin=dict(
+            l=0, r=0, t=0, b=0
+        ),
+
+        # legend
+        legend=dict(
+            orientation="v",
+            borderwidth=1,
+            bordercolor="#aaaaaa",
+            bgcolor="#fefefe",
+            xanchor="left",
+            x=1.08 if second_y else 1.01,
+            yanchor="top",
+            y=1,
+            tracegroupgap=20,
+            itemclick=False,
+        )
+    )
+
+    # Set x/y-axes properties
+    fig.update_xaxes(
+        type="date",
+        showgrid=True,
+        range=(
+            list(st.session_state.db["date"])[0],
+            list(st.session_state.db["date"])[-1] + pd.DateOffset(days=2),
+        ),
+    )
+    if second_y:
+        fig.update_yaxes(
+            secondary_y=False,
+            ticksuffix=" %" if bc_in_prc else " kg",
+        )
+        fig.update_yaxes(
+            secondary_y=True,
+            ticksuffix=" kg",
+        )
+    else:
+        fig.update_yaxes(
+            ticksuffix=" %" if bc_in_prc else " kg",
+        )
+
+    # Add range slider
+    fig.update_xaxes(
+        rangeselector=dict(
+            bgcolor="#ffffff",
+            buttons=list(
+                [
+                    dict(count=1, label="-1 month", step="month", stepmode="backward"),
+                    dict(count=2, label="-2 months", step="month", stepmode="backward"),
+                    dict(count=3, label="-3 months", step="month", stepmode="backward"),
+                    dict(count=6, label="-6 months", step="month", stepmode="backward"),
+                    dict(count=1, label="last year", step="year", stepmode="backward"),
+                    dict(step="all"),
+                ]
+            ),
+            x=1,
+            xanchor="right",
+            y=1.05,
+            yanchor="middle",
+        ),
+    )
+
+    return fig
