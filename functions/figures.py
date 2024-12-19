@@ -10,7 +10,7 @@ from sklearn.linear_model import LinearRegression as LinReg
 # dictionary of colors
 clrs = {
     "weight": "#2E4057",
-    "fat": "#FFBA49",
+    "fat": "#EEAA49",
     "water": "#1098F7",
     "muscle": "#EF5B5B",
     "trend": "#66a3FF",

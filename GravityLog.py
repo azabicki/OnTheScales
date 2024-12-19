@@ -26,10 +26,12 @@ with st.container(border=True):
     st.plotly_chart(fig_chrono, use_container_width=True, config = {'displayModeBar': False}, key="fig_chrono")
 
     # add selectbox for figure styling
-    st.selectbox(
-        "style:", ["lines", "markers", "both"], index=0, key="fig_main_style",
+    st.segmented_control(
+        "data style:",
+        options=["lines", "markers", "both"],
+        default="lines",
+        key="fig_main_style"
     )
-
 
 # ----- trend figure -----
 ut.h_spacer(1)
@@ -58,7 +60,7 @@ with st.container(border=True):
         with col_trend[0]:
             # radio button to select how to define starting point
             st.radio(
-                "trend based on",
+                "trend based on:",
                 ["start date", "date range"],
                 key="trend_how",
                 on_change=user.update_trend
@@ -68,7 +70,7 @@ with st.container(border=True):
         with col_trend[1]:
             if st.session_state.trend_how == "start date":
                 st.date_input(
-                    "select 'start date'",
+                    "select 'start date':",
                     format="DD.MM.YYYY",
                     key="trend_start",
                     disabled=False if st.session_state.trend_how == "start date" else True,
@@ -78,7 +80,7 @@ with st.container(border=True):
             # select _date range_
             if st.session_state.trend_how == "date range":
                 st.selectbox(
-                    "select 'range'",
+                    "select 'range':",
                     [4, 8, 12, 16, 20, 24],
                     format_func=lambda x: str(x) + " weeks",
                     key="trend_range",
