@@ -1,5 +1,4 @@
 import streamlit as st
-import numpy as np
 import functions.utils as ut
 import functions.user as user
 import functions.figures as fgs

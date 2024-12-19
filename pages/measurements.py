@@ -12,7 +12,7 @@ ut.create_menu()
 st.subheader("Manage Measurements")
 with st.container(border=True):
     # get date first
-    date = st.date_input("Date", "today", format="YYYY-MM-DD")
+    date = st.date_input("Date", "today", format="DD.MM.YYYY")
 
     # get measurements to fill in form
     if st.session_state.db.shape[0] == 0:

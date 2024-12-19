@@ -65,7 +65,8 @@ def select_user(src: str, input_idx: int) -> None:
     st.session_state.sb_user = idx
 
     # update user settings
-    ut.set_user_sessionstate()
+    ut.set_user_sessionstate(what="user")
+    ut.set_user_sessionstate(what="trend")
 
     # load user db
     if st.session_state.user_idx is not None:

@@ -37,7 +37,11 @@ def init_vars() -> None:
 
     # get user data from user_db
     if "user_name" not in st.session_state:
-        set_user_sessionstate()
+        set_user_sessionstate("user")
+
+    # get user data from user_db
+    if "user_trend_how" not in st.session_state:
+        set_user_sessionstate("trend")
 
     # load data_db for current user / or create empty db
     if "db" not in st.session_state:
@@ -54,36 +58,41 @@ def init_vars() -> None:
         st.session_state.debug = False
 
 
-def set_user_sessionstate() -> None:
+def set_user_sessionstate(what: str) -> None:
     """
-    Sets initial user session_state variables
+    Sets session state variables related to the user or trend settings.
 
     Args:
-        None
+        what (str): String indicating which variables to set ("user" or "trend")
 
     Returns:
         None
     """
 
-    if st.session_state.user_idx is not None:
-        # user data
-        st.session_state.user_name = st.session_state.user_db.loc[st.session_state.user_idx, "name"]
-        st.session_state.user_cm = st.session_state.user_db.loc[st.session_state.user_idx, "height"]
-        st.session_state.user_kg = st.session_state.user_db.loc[st.session_state.user_idx, "target"]
+    match what:
+        case "user":
+            if st.session_state.user_idx is not None:
+                # user data
+                st.session_state.user_name = st.session_state.user_db.loc[st.session_state.user_idx, "name"]
+                st.session_state.user_cm = st.session_state.user_db.loc[st.session_state.user_idx, "height"]
+                st.session_state.user_kg = st.session_state.user_db.loc[st.session_state.user_idx, "target"]
+            else:
+                # when no user in user_db
+                st.session_state.user_name = "..."
+                st.session_state.user_cm = None
+                st.session_state.user_kg = None
 
-        # trend settings
-        st.session_state.trend_how = st.session_state.user_db.loc[st.session_state.user_idx, "trend_how"]
-        st.session_state.trend_start = st.session_state.user_db.loc[st.session_state.user_idx, "trend_start"]
-        st.session_state.trend_range = st.session_state.user_db.loc[st.session_state.user_idx, "trend_range"]
-
-    else:
-        # when no user in user_db
-        st.session_state.user_name = "..."
-        st.session_state.user_cm = None
-        st.session_state.user_kg = None
-        st.session_state.trend_how = "..."
-        st.session_state.trend_start = "..."
-        st.session_state.trend_range = "..."
+        case "trend":
+            if st.session_state.user_idx is not None:
+                # trend settings
+                st.session_state.trend_how = st.session_state.user_db.loc[st.session_state.user_idx, "trend_how"]
+                st.session_state.trend_start = st.session_state.user_db.loc[st.session_state.user_idx, "trend_start"]
+                st.session_state.trend_range = st.session_state.user_db.loc[st.session_state.user_idx, "trend_range"]
+            else:
+                # when no user in user_db
+                st.session_state.trend_how = "..."
+                st.session_state.trend_start = "..."
+                st.session_state.trend_range = "..."
 
 
 def create_menu() -> None:
