@@ -8,13 +8,16 @@ ut.init_vars()
 ut.default_style()
 ut.create_menu()
 
-# name of current user
-st.title(st.session_state.user_name)
-
+# ----- current user -----
+col_title = st.columns(3, gap="small", vertical_alignment="bottom")
+# name
+with col_title[0]:
+    col_title[0].header(st.session_state.user_name)
 # shortcut to go to measurements page
-goto_measurement = st.button("New Measurement")
-if goto_measurement:
-    ut.switch_page("measurements")
+with col_title[1]:
+    goto_measurement = st.button("New Measurement")
+    if goto_measurement:
+        ut.switch_page("measurements")
 
 # ----- main figure -----
 with st.container(border=True):
@@ -29,7 +32,7 @@ with st.container(border=True):
 
 
 # ----- trend figure -----
-ut.h_spacer(2)
+ut.h_spacer(1)
 st.subheader("trend & predict")
 
 # draw trend figure and get trend
