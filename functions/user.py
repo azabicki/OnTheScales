@@ -134,7 +134,7 @@ def add(name:str, height:int, target:int) -> None:
         "target": target,
         "trend_how": "date range",
         "trend_start": datetime.now().date(),
-        "trend_range": 4
+        "trend_range": 8
     },index=[0])
 
     # add row to users_db
