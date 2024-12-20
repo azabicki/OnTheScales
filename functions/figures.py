@@ -39,6 +39,10 @@ def main() -> go.Figure|None:
         else st.session_state["fig_main_style"]
     )
 
+    # if only one measurement, use markers
+    if st.session_state.db.shape[0] == 1:
+        mode = "markers"
+
     # instantiate figure
     fig = go.Figure()
 
@@ -113,8 +117,8 @@ def main() -> go.Figure|None:
         type="date",
         showgrid=True,
         range=(
-            list(st.session_state.db["date"])[0],
-            list(st.session_state.db["date"])[-1] + pd.DateOffset(days=2),
+            list(st.session_state.db["date"])[0] - pd.DateOffset(weeks=1),
+            list(st.session_state.db["date"])[-1] + pd.DateOffset(weeks=1),
         ),
     )
     fig.update_yaxes(
@@ -164,13 +168,9 @@ def trend() -> tuple[go.Figure|None, float]:
     # instantiate figure
     fig = go.Figure()
 
-    print(" > how: ", st.session_state.trend_how)
     # get dates for x_axis based on trend_how
     if st.session_state.trend_how == "start date":
         # get date
-        print("  > start: ", st.session_state.trend_start)
-        print("         : ", type(st.session_state.trend_start))
-
         x_data = [
             datetime.combine(st.session_state.trend_start, time(0, 0, 0)),
             list(st.session_state.db["date"])[-1],
@@ -178,9 +178,6 @@ def trend() -> tuple[go.Figure|None, float]:
 
     elif st.session_state.trend_how == "date range":
         # get weeks
-        print("  > range: ", st.session_state.trend_range)
-        print("         : ", type(st.session_state.trend_range))
-
         weeks = int(st.session_state.trend_range)
         x_data = [
             list(st.session_state.db["date"])[-1] - pd.Timedelta(weeks=weeks),
@@ -191,9 +188,6 @@ def trend() -> tuple[go.Figure|None, float]:
             list(st.session_state.db["date"])[0],
             list(st.session_state.db["date"])[-1],
         ]
-
-    print("    > first day: ", x_data[0])
-    print("               : ", type(x_data[0]))
 
     # filter data
     idx_db = st.session_state.db["date"][st.session_state.db["date"] >= x_data[0]].index
@@ -249,10 +243,6 @@ def trend() -> tuple[go.Figure|None, float]:
         db_data["date"].iloc[0] - pd.Timedelta(weeks=1),
         pred_date[-1],
     ]
-
-    # return if no measurements stored
-    if st.session_state.db.shape[0] == 0:
-        return fig, 0
 
     # add target weight
     fig.add_trace(
@@ -396,6 +386,10 @@ def body_comp() -> go.Figure|None:
     bc_in_prc = st.session_state["fig_body_comp_type"] == "%"
     show_wgt = st.session_state["fig_body_comp_weight"] == "weight & target"
     second_y = bc_in_prc and show_wgt
+
+    # if only one measurement, use markers
+    if st.session_state.db.shape[0] == 1:
+        mode = "markers"
 
     # instantiate figure
     if second_y:
@@ -550,8 +544,8 @@ def body_comp() -> go.Figure|None:
         type="date",
         showgrid=True,
         range=(
-            list(st.session_state.db["date"])[0],
-            list(st.session_state.db["date"])[-1] + pd.DateOffset(days=2),
+            list(st.session_state.db["date"])[0] - pd.DateOffset(weeks=1),
+            list(st.session_state.db["date"])[-1] + pd.DateOffset(weeks=1),
         ),
     )
     if second_y:

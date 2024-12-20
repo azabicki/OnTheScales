@@ -15,7 +15,7 @@ with col_title[0]:
     col_title[0].header(st.session_state.user_name)
 # shortcut to go to measurements page
 with col_title[1]:
-    goto_measurement = st.button("New Measurement")
+    goto_measurement = st.button("New Measurement", type="secondary")
     if goto_measurement:
         ut.switch_page("measurements")
 
@@ -48,7 +48,7 @@ fig_trend, trend = fgs.trend()
 
 with st.container(border=True):
     if fig_trend is None:
-        st.markdown("_No measurements stored yet._")
+        st.markdown("_No, or not enough, measurements stored yet._")
     else:
         # show current change rate of weight
         c1,c2,c3 = st.columns([3, 2, 2])

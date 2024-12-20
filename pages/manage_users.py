@@ -110,7 +110,7 @@ with st.container(border=True):
 
             # last question
             st.subheader(f"Are you sure to delete _'{usr_name[st.session_state.sb_user_delete] if st.session_state.sb_user_delete is not None else ''}'_?")
-            st.caption("This is not reversible and all data will be lost! Maybe consider __exporting__ the data first?")
+            st.caption(f"This is not reversible and all data will be lost! Maybe consider _copying_ your data first? It's all saved in the _'data/{st.session_state.user_name}.csv'_ file.")
 
             col_b1, col_b2 = st.columns([1, 1], gap="small")
             # abort button
