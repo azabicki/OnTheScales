@@ -132,7 +132,7 @@ def add(name:str, height:int, target:int) -> None:
         "name": name,
         "height": height,
         "target": target,
-        "trend_how": "date_range",
+        "trend_how": "date range",
         "trend_start": datetime.now().date(),
         "trend_range": 4
     },index=[0])
