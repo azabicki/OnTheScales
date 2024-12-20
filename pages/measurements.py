@@ -81,22 +81,24 @@ with st.container(border=True):
         # check if measurements for this day are already saved
         if any(st.session_state.db["date"] == pd.to_datetime(date)):
             btn_add_upd_lbl = "**update** measurement"
+            btn_add_upd_icn = ":material/update:"
             btn_del_disabled = False
         else:
             btn_add_upd_lbl = "**add new** measurement"
+            btn_add_upd_icn = ":material/add_circle:"
             btn_del_disabled = True
 
         # submit button
-        col_btn_add_upd, col_fdb_add_upd = st.columns([1, 3], gap="small")
+        col_btn_add_upd, col_fdb_add_upd = st.columns([2, 3], gap="small")
         with col_btn_add_upd:
-            submitted_add_upd = st.form_submit_button(label=btn_add_upd_lbl)
+            submitted_add_upd = st.form_submit_button(label=btn_add_upd_lbl, icon=btn_add_upd_icn)
         with col_fdb_add_upd:
             container_add_upd = st.empty()
 
     # delete button and feedback
-    col_btn_del, col_fdb_del = st.columns([1, 3], gap="small")
+    col_btn_del, col_fdb_del = st.columns([2, 3], gap="small")
     with col_btn_del:
-        submitted_del = st.button(label="**delete** measurement", disabled=btn_del_disabled)
+        submitted_del = st.button(label="**delete** measurement", icon=":material/delete:", disabled=btn_del_disabled)
     with col_fdb_del:
         container_del = st.empty()
 

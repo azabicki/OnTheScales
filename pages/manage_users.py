@@ -62,7 +62,7 @@ with st.container(border=True):
             "Target Weight:", min_value=0, max_value=200, step=1, value=80, format="%d kg", key="new_usr_target"
         )
 
-    col_btn, col_fdb = st.columns([1, 4], gap="small")
+    col_btn, col_fdb = st.columns([1, 2], gap="small")
     # submit button
     with col_btn:
         submitted_add = st.button(
