@@ -138,18 +138,18 @@ st.dataframe(
 # display messages ----------------------
 if st.session_state.flags["data_add"]:
     st.session_state.flags["data_add"] = False
-    container_add_upd.success("new entry **added**")
+    container_add_upd.success("new entry **added**", icon=":material/add_circle:")
     time.sleep(2)
     container_add_upd.empty()
 
 if st.session_state.flags["data_upd"]:
     st.session_state.flags["data_upd"] = False
-    container_add_upd.success("old entry **updated**")
+    container_add_upd.success("old entry **updated**", icon=":material/update:")
     time.sleep(2)
     container_add_upd.empty()
 
 if st.session_state.flags["data_del"]:
     st.session_state.flags["data_del"] = False
-    container_del.success("entry **deleted**")
+    container_del.success("entry **deleted**", icon=":material/delete:")
     time.sleep(2)
     container_del.empty()

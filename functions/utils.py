@@ -129,9 +129,9 @@ def create_menu() -> None:
     st.sidebar.divider()
 
     # pages
-    st.sidebar.page_link("GravityLog.py", label="📉 Graphs")
-    st.sidebar.page_link(os.path.join("pages", "measurements.py"), label="📓 Measurements")
-    st.sidebar.page_link(os.path.join("pages", "manage_users.py"), label="👥 Manage Users")
+    st.sidebar.page_link("GravityLog.py", label=":material/trending_down: Graphs")
+    st.sidebar.page_link(os.path.join("pages", "measurements.py"), label=":material/notes: Measurements")
+    st.sidebar.page_link(os.path.join("pages", "manage_users.py"), label=":material/groups: Manage Users")
     st.sidebar.divider()
 
 

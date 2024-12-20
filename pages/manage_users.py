@@ -66,7 +66,7 @@ with st.container(border=True):
     # submit button
     with col_btn:
         submitted_add = st.button(
-            "add new user",
+            ":material/person_add: add new user",
             disabled=True if st.session_state.new_usr_name == "" else False,
             on_click=user.add,
             args=(name, height, target)
@@ -105,7 +105,7 @@ with st.container(border=True):
         with st.popover(
                 "delete user",
                 use_container_width=True,
-                icon="🚨",
+                icon=":material/warning:",
                 disabled=True if st.session_state.sb_user_delete is None else False):
 
             # last question
@@ -117,6 +117,7 @@ with st.container(border=True):
             with col_b1:
                 submitted_abort = st.button(
                     "nope... stop it!",
+                    icon=":material/back_hand: ",
                     type="secondary",
                     use_container_width=True,
                     on_click=user.delete,
@@ -128,7 +129,7 @@ with st.container(border=True):
                 submitted_del = st.button(
                     "YES! LET'S DO IT!",
                     type="primary",
-                    icon="🔥",
+                    icon=":material/delete:",
                     use_container_width=True,
                     on_click=user.delete,
                     args=(st.session_state.sb_user_delete, ),
@@ -145,25 +146,25 @@ with st.container(border=True):
 # ----- show feedback ---------------
 if st.session_state.flags["usr_update_ok"]:
     st.session_state.flags["usr_update_ok"] = False
-    container_update.success("User **updated**")
+    container_update.success("User **updated**", icon=":material/done_outline:")
     time.sleep(2)
     container_update.empty()
 
 if st.session_state.flags["usr_add_ok"]:
     st.session_state.flags["usr_add_ok"] = False
-    container_add.success("User **added**")
+    container_add.success("User **added**", icon=":material/done_outline:")
     time.sleep(2)
     container_add.empty()
 
 if st.session_state.flags["usr_add_exists"]:
     st.session_state.flags["usr_add_exists"] = False
-    container_add.error("User already in database")
+    container_add.warning("User already in database", icon=":material/warning:")
     time.sleep(2)
     container_add.empty()
 
 # show feedback
 if st.session_state.flags["usr_del_ok"]:
     st.session_state.flags["usr_del_ok"] = False
-    container_del.success("User **deleted**")
+    container_del.success("User **deleted**", icon=":material/done_outline:")
     time.sleep(1)
     container_del.empty()
