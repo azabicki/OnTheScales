@@ -114,26 +114,6 @@ with st.container(border=True):
         # rerun 4 feedback
         st.rerun()
 
-# display messages ----------------------
-if st.session_state.flags["data_add"]:
-    st.session_state.flags["data_add"] = False
-    container_add_upd.success("new entry **added**")
-    time.sleep(2)
-    container_add_upd.empty()
-
-if st.session_state.flags["data_upd"]:
-    st.session_state.flags["data_upd"] = False
-    container_add_upd.success("old entry **updated**")
-    time.sleep(2)
-    container_add_upd.empty()
-
-if st.session_state.flags["data_del"]:
-    st.session_state.flags["data_del"] = False
-    container_del.success("entry **deleted**")
-    time.sleep(2)
-    container_del.empty()
-
-
 # overview database entries -----------------------------------------------
 ut.h_spacer(2)
 st.subheader("All Measurements")
@@ -154,3 +134,22 @@ st.dataframe(
             label="% Muscle", format="%.1f %%"),
     },
 )
+
+# display messages ----------------------
+if st.session_state.flags["data_add"]:
+    st.session_state.flags["data_add"] = False
+    container_add_upd.success("new entry **added**")
+    time.sleep(2)
+    container_add_upd.empty()
+
+if st.session_state.flags["data_upd"]:
+    st.session_state.flags["data_upd"] = False
+    container_add_upd.success("old entry **updated**")
+    time.sleep(2)
+    container_add_upd.empty()
+
+if st.session_state.flags["data_del"]:
+    st.session_state.flags["data_del"] = False
+    container_del.success("entry **deleted**")
+    time.sleep(2)
+    container_del.empty()

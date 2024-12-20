@@ -37,14 +37,6 @@ edited_user = st.data_editor(
 # placeholder for feedback
 container_update = st.empty()
 
-# show feedback
-if st.session_state.flags["usr_update_ok"]:
-    st.session_state.flags["usr_update_ok"] = False
-    container_update.success("User **updated**")
-    time.sleep(2)
-    container_update.empty()
-
-
 # add users -------------------------------------------------------------------
 ut.h_spacer(2)
 st.subheader("Add User")
@@ -87,19 +79,6 @@ with st.container(border=True):
     # rerun when button pressed
     if submitted_add:
         st.rerun()
-
-    # show feedback
-    if st.session_state.flags["usr_add_ok"]:
-        st.session_state.flags["usr_add_ok"] = False
-        container_add.success("User **added**")
-        time.sleep(2)
-        container_add.empty()
-
-    if st.session_state.flags["usr_add_exists"]:
-        st.session_state.flags["usr_add_exists"] = False
-        container_add.error("User already in database")
-        time.sleep(2)
-        container_add.empty()
 
 # delete users ----------------------------------------------------------------
 ut.h_spacer(2)
@@ -163,9 +142,28 @@ with st.container(border=True):
     if submitted_del or submitted_abort:
         st.rerun()
 
-    # show feedback
-    if st.session_state.flags["usr_del_ok"]:
-        st.session_state.flags["usr_del_ok"] = False
-        container_del.success("User **deleted**")
-        time.sleep(1)
-        container_del.empty()
+# ----- show feedback ---------------
+if st.session_state.flags["usr_update_ok"]:
+    st.session_state.flags["usr_update_ok"] = False
+    container_update.success("User **updated**")
+    time.sleep(2)
+    container_update.empty()
+
+if st.session_state.flags["usr_add_ok"]:
+    st.session_state.flags["usr_add_ok"] = False
+    container_add.success("User **added**")
+    time.sleep(2)
+    container_add.empty()
+
+if st.session_state.flags["usr_add_exists"]:
+    st.session_state.flags["usr_add_exists"] = False
+    container_add.error("User already in database")
+    time.sleep(2)
+    container_add.empty()
+
+# show feedback
+if st.session_state.flags["usr_del_ok"]:
+    st.session_state.flags["usr_del_ok"] = False
+    container_del.success("User **deleted**")
+    time.sleep(1)
+    container_del.empty()
