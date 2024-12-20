@@ -162,7 +162,7 @@ def trend() -> tuple[go.Figure|None, float]:
     """
 
     # return if no measurements stored
-    if st.session_state.db.shape[0] == 0:
+    if st.session_state.db.shape[0] <= 1:
         return None, 0
 
     # instantiate figure
