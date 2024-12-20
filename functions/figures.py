@@ -19,12 +19,18 @@ clrs = {
 }
 
 
-def main() -> go.Figure:
-    """Generates figure showing timely development of weight measurements.
+def main() -> go.Figure|None:
+    """
+    Main function to generate the primary weight tracking figure.
 
     Returns:
-        plotly.graph_objects.Figure: main figure of app.
+        go.Figure | None: Plotly figure object containing the weight tracking visualization,
+                         or None if no measurements are stored.
     """
+
+    # return if no measurements stored
+    if st.session_state.db.shape[0] == 0:
+        return None
 
     # marker/line mode
     mode = (
@@ -35,10 +41,6 @@ def main() -> go.Figure:
 
     # instantiate figure
     fig = go.Figure()
-
-    # return if no measurements stored
-    if st.session_state.db.shape[0] == 0:
-        return fig
 
     # add target weight
     fig.add_trace(
@@ -143,13 +145,24 @@ def main() -> go.Figure:
     return fig
 
 
-def trend() -> tuple[go.Figure, float]:
-    # instantiate figure
-    fig = go.Figure()
+def trend() -> tuple[go.Figure|None, float]:
+    """
+    Function to calculate and visualize weight trends and predictions.
+
+    Performs linear regression on weight data to determine trends, creates a visualization of actual weights, trend lines, and predictions for future weight based on current trends.
+
+    Returns:
+        tuple[go.Figure|None, float]: A tuple containing:
+            - A plotly figure object with the trend visualization, or None if no data
+            - The calculated trend coefficient (slope of regression line)
+    """
 
     # return if no measurements stored
     if st.session_state.db.shape[0] == 0:
-        return fig, 0
+        return None, 0
+
+    # instantiate figure
+    fig = go.Figure()
 
     print(" > how: ", st.session_state.trend_how)
     # get dates for x_axis based on trend_how
@@ -360,7 +373,20 @@ def trend() -> tuple[go.Figure, float]:
     return fig, trnd
 
 
-def body_comp():
+def body_comp() -> go.Figure|None:
+    """
+    Function to visualize the body composition over time.
+
+    Creates a plot showing the evolution of various body composition measurements (fat, water, and muscle percentages) over time. Can display values either as percentages or absolute weights, and optionally include weight and target lines.
+
+    Returns:
+        go.Figure | None: Plotly figure object containing the body composition visualization, or None if no measurements are stored.
+    """
+
+    # return if no measurements stored
+    if st.session_state.db.shape[0] == 0:
+        return None
+
     # marker/line/body_comp mode
     mode = (
         "markers+lines"
@@ -376,10 +402,6 @@ def body_comp():
         fig = make_subplots(specs=[[{"secondary_y": True}]])
     else:
         fig = go.Figure()
-
-    # return if no measurements stored
-    if st.session_state.db.shape[0] == 0:
-        return fig
 
     # add composites
     for var in ["fat", "water", "muscle"]:

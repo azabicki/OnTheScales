@@ -21,12 +21,17 @@ with col_title[1]:
 
 # ----- main figure -----
 with st.container(border=True):
-    # draw figure
+    # create figure
     fig_chrono = fgs.main()
-    st.plotly_chart(fig_chrono, use_container_width=True, config = {'displayModeBar': False}, key="fig_chrono")
-    st.divider()
+
+    # draw and show figure
+    if fig_chrono is None:
+        st.markdown("_No measurements stored yet._")
+    else:
+        st.plotly_chart(fig_chrono, use_container_width=True, config = {'displayModeBar': False}, key="fig_chrono")
 
     # add selectbox for figure styling
+    st.divider()
     st.segmented_control(
         "data style:",
         options=["lines", "markers", "both"],
@@ -38,26 +43,29 @@ with st.container(border=True):
 ut.h_spacer(1)
 st.subheader("trend & predict")
 
-# draw trend figure and get trend
+# create trend figure and get trend
 fig_trend, trend = fgs.trend()
 
 with st.container(border=True):
-    # show current change rate of weight
-    c1,c2,c3 = st.columns([3, 2, 2])
-    c1.markdown("**$\Delta$kg {txt}:**"
-        .format(
-            txt="since {date}".format(date=st.session_state.trend_start.date().strftime("%d.%m.%Y"))
-            if st.session_state.trend_how == "start date"
-            else f"in last {st.session_state.trend_range} weeks"
-    ))
-    c2.markdown(f"_{round(trend*10**9*60*60*24*7, 2)} kg/week_")
-    c3.markdown(f"_{round(trend*10**9*60*60*24*30, 2)} kg/month_")
+    if fig_trend is None:
+        st.markdown("_No measurements stored yet._")
+    else:
+        # show current change rate of weight
+        c1,c2,c3 = st.columns([3, 2, 2])
+        c1.markdown("**$\Delta$kg {txt}:**"
+            .format(
+                txt="since {date}".format(date=st.session_state.trend_start.date().strftime("%d.%m.%Y"))
+                if st.session_state.trend_how == "start date"
+                else f"in last {st.session_state.trend_range} weeks"
+        ))
+        c2.markdown(f"_{round(trend*10**9*60*60*24*7, 2)} kg/week_")
+        c3.markdown(f"_{round(trend*10**9*60*60*24*30, 2)} kg/month_")
 
-    # plot trend
-    st.plotly_chart(fig_trend, use_container_width=True, config = {'displayModeBar': False}, key="fig_trend")
-    st.divider()
+        # draw and show trend
+        st.plotly_chart(fig_trend, use_container_width=True, config = {'displayModeBar': False}, key="fig_trend")
 
     # add columns for figure options
+    st.divider()
     col_trend = st.columns(2, gap="small")
 
     # radio button to select how to define starting point
@@ -100,10 +108,14 @@ st.subheader("body composition")
 with st.container(border=True):
     # draw figure
     fig_body_comp = fgs.body_comp()
-    st.plotly_chart(fig_body_comp, use_container_width=True, config = {'displayModeBar': False}, key="fig_body_comp")
-    st.divider()
+
+    if fig_body_comp is None:
+        st.markdown("_No measurements stored yet._")
+    else:
+        st.plotly_chart(fig_body_comp, use_container_width=True, config = {'displayModeBar': False}, key="fig_body_comp")
 
     # add columns for figure options
+    st.divider()
     col_body_comp = st.columns([2,3,2], gap="small")
 
     # add selectbox for body composition
