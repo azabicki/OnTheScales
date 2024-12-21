@@ -15,7 +15,7 @@ with col_title[0]:
     col_title[0].header(st.session_state.user_name)
 # shortcut to go to measurements page
 with col_title[1]:
-    goto_measurement = st.button("New Measurement", type="secondary")
+    goto_measurement = st.button("New Measurement", icon=":material/add_circle:")
     if goto_measurement:
         ut.switch_page("measurements")
 
