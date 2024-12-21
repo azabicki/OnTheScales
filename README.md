@@ -78,6 +78,34 @@ The app will be available at http://localhost:8501.
 
 Using _GravityLog_ is straightforward. Simply select a user profile from the dropdown menu, and start tracking your body composition. You can also create multiple user profiles to track different persons.
 
+## Raspberry Pi
+
+_GravityLog_ can also be run on a Raspberry Pi, I did it on an older Raspberry Pi 3B+. The following steps are required to install and run _GravityLog_ on a Raspberry Pi:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### autostart BotS
+
+There is also script to start _GravityLog_ in the `misc/RaspPi` folder. It will start the app in the background and automatically start when the Raspberry Pi boots.
+
+In the following commands, first edit the `path` to the _GravityLog_ folder, and then run these in your bash console:
+
+```bash
+EDIT_THIS_PATH="/path/to/GravityLog"
+
+chmod +x $EDIT_THIS_PATH/misc/RaspPi/autorun_gravitylog.sh
+
+echo "# ----- autostart GravityLog after boot -----" >> ~/.bashrc
+echo "if [ \$(tty) == /dev/tty1 ]; then" >> ~/.bashrc
+echo "    $EDIT_THIS_PATH/misc/RaspPi/autorun_gravitylog.sh" >> ~/.bashrc
+echo "fi" >> ~/.bashrc
+```
+
 ## Data Privacy
 
 This application runs entirely locally on your machine. All user data is stored in CSV files in the `data/` directory, ensuring complete control over your personal information.
