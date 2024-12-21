@@ -133,6 +133,9 @@ dmypy.json
 #config file has sensitive data
 .mlflow_uri
 
+# Streamlit Cloud deployement
+.devcontainer
+
 # Zed Editor
 pyrightconfig.json
 
