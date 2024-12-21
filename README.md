@@ -2,6 +2,8 @@
 
 This Streamlit application serves as a tool for tracking and managing body measurements over time. It enables users to record, visualize, and analyze weight and body composition metrics: weight along with body fat, water content, and muscle mass. _GravityLog_ is designed for individuals who want to monitor their body composition changes, whether for fitness goals, health monitoring, or weight management. While being comprehensive in its tracking capabilities, it maintains a straightforward and practical approach to data management and visualization.
 
+--> check out [**GravityLog @ streamlit.app**](https://gravitylog.streamlit.app/) to see it in action!
+
 ## Features
 
 **Data Visualization:**
