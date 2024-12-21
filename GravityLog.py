@@ -35,7 +35,6 @@ with st.container(border=True):
     st.segmented_control(
         "data style:",
         options=["lines", "markers", "both"],
-        default="lines",
         key="fig_main_style"
     )
 
@@ -73,7 +72,6 @@ with st.container(border=True):
         st.segmented_control(
             "trend based on:",
             options=["start date", "date range"],
-            default="start date",
             key="trend_how",
             on_change=user.update_trend
         )
@@ -92,7 +90,6 @@ with st.container(border=True):
         if st.session_state.trend_how == "date range":
             st.number_input(
                 "select 'range' - in weeks:",
-                value=st.session_state.trend_range,
                 format="%d",
                 min_value=1,
                 max_value=100,
@@ -123,7 +120,6 @@ with st.container(border=True):
         "body composition:",
         options=["%", "kg"],
         format_func=lambda x: "in " + x,
-        default="%",
         key="fig_body_comp_type"
     )
 
@@ -131,7 +127,6 @@ with st.container(border=True):
     col_body_comp[1].segmented_control(
         "data style:",
         options=["lines", "markers", "both"],
-        default="lines",
         key="fig_body_comp_style",
     )
 
