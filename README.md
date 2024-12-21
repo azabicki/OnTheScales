@@ -28,7 +28,7 @@ The interface aims to be straightforward and functional, focusing on providing u
 
 Clone this repository
 
-```zsh
+```bash
 git clone https://github.com/azabicki/GravityLog
 ```
 
@@ -41,7 +41,7 @@ Install a virtual environment according to your OS:
 
 ##### MacOS & Linux
 
-```zsh
+```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
@@ -50,7 +50,7 @@ pip install -r requirements.txt
 
 ##### Windows
 
-```sh
+```bash
 py -m venv venv
 venv\Scripts\activate
 pip install --upgrade pip
@@ -61,7 +61,7 @@ pip install -r requirements.txt
 
 If you are using _*conda_, an environment.yml file is provided, which also installs the required python version `3.11.2`:
 
-```zsh
+```bash
 conda env create -f environment.yml
 conda activate GravityLog
 ```
@@ -70,7 +70,7 @@ conda activate GravityLog
 
 To start the app, run the following command:
 
-```zsh
+```bash
 streamlit run GravityLog.py
 ```
 
@@ -89,7 +89,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### autostart BotS
+### autostart
 
 There is also script to start _GravityLog_ in the `misc/RaspPi` folder. It will start the app in the background and automatically start when the Raspberry Pi boots.
 
