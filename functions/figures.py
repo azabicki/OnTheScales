@@ -131,11 +131,11 @@ def main() -> go.Figure|None:
             bgcolor="#ffffff",
             buttons=list(
                 [
-                    dict(count=1, label="-1 month", step="month", stepmode="backward"),
-                    dict(count=2, label="-2 months", step="month", stepmode="backward"),
-                    dict(count=3, label="-3 months", step="month", stepmode="backward"),
-                    dict(count=6, label="-6 months", step="month", stepmode="backward"),
-                    dict(count=1, label="last year", step="year", stepmode="backward"),
+                    dict(count=1, label="-1mon", step="month", stepmode="backward"),
+                    dict(count=2, label="-2mos", step="month", stepmode="backward"),
+                    dict(count=3, label="-3mos", step="month", stepmode="backward"),
+                    dict(count=6, label="-6mos", step="month", stepmode="backward"),
+                    dict(count=1, label="YTD", step="year", stepmode="backward"),
                     dict(step="all"),
                 ]
             ),
@@ -568,11 +568,11 @@ def body_comp() -> go.Figure|None:
             bgcolor="#ffffff",
             buttons=list(
                 [
-                    dict(count=1, label="-1 month", step="month", stepmode="backward"),
-                    dict(count=2, label="-2 months", step="month", stepmode="backward"),
-                    dict(count=3, label="-3 months", step="month", stepmode="backward"),
-                    dict(count=6, label="-6 months", step="month", stepmode="backward"),
-                    dict(count=1, label="last year", step="year", stepmode="backward"),
+                    dict(count=1, label="-1mon", step="month", stepmode="backward"),
+                    dict(count=2, label="-2mos", step="month", stepmode="backward"),
+                    dict(count=3, label="-3mos", step="month", stepmode="backward"),
+                    dict(count=6, label="-6mos", step="month", stepmode="backward"),
+                    dict(count=1, label="YTD", step="year", stepmode="backward"),
                     dict(step="all"),
                 ]
             ),
