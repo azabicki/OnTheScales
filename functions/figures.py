@@ -418,7 +418,6 @@ def body_comp() -> go.Figure|None:
                     marker_size=5,
                     line_width=3,
                     line_color=clrs[var],
-                    legendgroup="%",
                 ),
                 secondary_y=False,
             )
@@ -433,7 +432,6 @@ def body_comp() -> go.Figure|None:
                     marker_size=5,
                     line_width=3,
                     line_color=clrs[var],
-                    legendgroup="%",
                 )
             )
 
@@ -441,6 +439,7 @@ def body_comp() -> go.Figure|None:
     # add _weight_ & _target_
     if st.session_state["fig_body_comp_weight"] == "weight & target":
         if second_y:
+            # weight
             fig.add_trace(
                 go.Scatter(
                     x=st.session_state.db["date"],
@@ -451,11 +450,11 @@ def body_comp() -> go.Figure|None:
                     line_width=1,
                     line_color=clrs["weight"],
                     marker_size=4,
-                    legendgroup="kg",
                 ),
                 secondary_y=bc_in_prc,
             )
 
+            # target
             fig.add_trace(
                 go.Scatter(
                     x=[
@@ -463,18 +462,18 @@ def body_comp() -> go.Figure|None:
                         list(st.session_state.db["date"])[-1],
                     ],
                     y=[st.session_state.user_kg, st.session_state.user_kg],
-                    showlegend=True,
+                    showlegend=False,
                     hoverinfo="skip",
                     name="target",
                     mode="lines",
                     line_color="#595959",
                     line_width=1,
                     line_dash="dot",
-                    legendgroup="kg",
                 ),
                 secondary_y=bc_in_prc,
             )
         else:
+            # weight
             fig.add_trace(
                 go.Scatter(
                     x=st.session_state.db["date"],
@@ -485,10 +484,10 @@ def body_comp() -> go.Figure|None:
                     line_width=1,
                     line_color=clrs["weight"],
                     marker_size=6,
-                    legendgroup="kg",
                 )
             )
 
+            # target
             fig.add_trace(
                 go.Scatter(
                     x=[
@@ -496,14 +495,13 @@ def body_comp() -> go.Figure|None:
                         list(st.session_state.db["date"])[-1],
                     ],
                     y=[st.session_state.user_kg, st.session_state.user_kg],
-                    showlegend=True,
+                    showlegend=False,
                     hoverinfo="skip",
                     name="target",
                     mode="lines",
                     line_color="#595959",
                     line_width=1,
                     line_dash="dot",
-                    legendgroup="kg",
                 )
             )
 
@@ -521,20 +519,22 @@ def body_comp() -> go.Figure|None:
 
         # margin
         margin=dict(
-            l=0, r=0, t=0, b=0
+            l=0, r=0, t=0, b=0,
+            pad=4
         ),
 
         # legend
         legend=dict(
-            orientation="v",
+            orientation="h",
             borderwidth=1,
             bordercolor="#aaaaaa",
             bgcolor="#fefefe",
-            xanchor="left",
-            x=1.08 if second_y else 1.01,
+            font_size=10,
+            valign="bottom",
+            xanchor="center",
+            x=.5,
             yanchor="top",
-            y=1,
-            tracegroupgap=20,
+            y=-0.1,
             itemclick=False,
         )
     )
