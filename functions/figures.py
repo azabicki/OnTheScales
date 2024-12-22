@@ -108,7 +108,8 @@ def main() -> go.Figure|None:
             bgcolor="#fefefe",
             xanchor="right",
             x=1,
-            itemclick=False
+            itemclick=False,
+            traceorder="reversed",
         )
     )
 
