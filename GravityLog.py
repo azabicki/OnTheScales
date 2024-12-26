@@ -125,42 +125,50 @@ with st.container(border=True):
 ut.h_spacer(1)
 st.subheader("body composition")
 
-with st.container(border=True):
-    # draw figure
-    fig_body_comp = fgs.body_comp()
 
-    if fig_body_comp is None:
-        st.markdown("_No measurements stored yet._")
-    else:
-        st.plotly_chart(
-            fig_body_comp,
-            use_container_width=True,
-            config={"displayModeBar": False},
-            key="fig_body_comp",
+# create fragment 4 body_comp_figure
+@st.fragment()
+def fragemnt_body_comp_figure():
+    with st.container(border=True):
+        # draw figure
+        fig_body_comp = fgs.body_comp()
+
+        if fig_body_comp is None:
+            st.markdown("_No measurements stored yet._")
+        else:
+            st.plotly_chart(
+                fig_body_comp,
+                use_container_width=True,
+                config={"displayModeBar": False},
+                key="fig_body_comp",
+            )
+
+        # add columns for figure options
+        st.divider()
+        col_body_comp = st.columns([2, 3, 2], gap="small")
+
+        # add selectbox for body composition
+        col_body_comp[0].segmented_control(
+            "body composition:",
+            options=["%", "kg"],
+            format_func=lambda x: "in " + x,
+            key="fig_body_comp_type",
         )
 
-    # add columns for figure options
-    st.divider()
-    col_body_comp = st.columns([2, 3, 2], gap="small")
+        # add selectbox for figure styling
+        col_body_comp[1].segmented_control(
+            "data style:",
+            options=["lines", "markers", "both"],
+            key="fig_body_comp_style",
+        )
 
-    # add selectbox for body composition
-    col_body_comp[0].segmented_control(
-        "body composition:",
-        options=["%", "kg"],
-        format_func=lambda x: "in " + x,
-        key="fig_body_comp_type",
-    )
+        # add selectbox for adding weight
+        col_body_comp[2].segmented_control(
+            "showing:",
+            options=["weight & target"],
+            key="fig_body_comp_weight",
+        )
 
-    # add selectbox for figure styling
-    col_body_comp[1].segmented_control(
-        "data style:",
-        options=["lines", "markers", "both"],
-        key="fig_body_comp_style",
-    )
 
-    # add selectbox for adding weight
-    col_body_comp[2].segmented_control(
-        "showing:",
-        options=["weight & target"],
-        key="fig_body_comp_weight",
-    )
+# run body comp figure fragment_main_figure
+fragemnt_body_comp_figure()
