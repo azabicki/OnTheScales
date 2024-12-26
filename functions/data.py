@@ -4,6 +4,7 @@ import pandas as pd
 import streamlit as st
 from datetime import date
 
+
 def create_df() -> pd.DataFrame:
     """
     Generates an empty dataframe with date, weight, fat, water, and muscle metrics
@@ -12,7 +13,7 @@ def create_df() -> pd.DataFrame:
         pd.DataFrame: empty base dataframe with column structure
     """
 
-    cols = {"date":[], "weight":[], "fat":[], "water":[], "muscle":[]}
+    cols = {"date": [], "weight": [], "fat": [], "water": [], "muscle": []}
     df = pd.DataFrame(cols)
     return df
 
@@ -102,7 +103,7 @@ def delete(date: date) -> None:
     st.session_state.flags["data_del"] = True
 
     # find index of entry to delete
-    idx_date = (st.session_state.db["date"] == pd.to_datetime(date))
+    idx_date = st.session_state.db["date"] == pd.to_datetime(date)
 
     # save all but deleted entry
     st.session_state.db = st.session_state.db.loc[np.invert(idx_date), :]

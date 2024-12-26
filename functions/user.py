@@ -35,7 +35,7 @@ def select_user(src: str, input_idx: int) -> None:
 
         # after adding new user
         case "adding":
-            idx = st.session_state.user_db.shape[0]-1
+            idx = st.session_state.user_db.shape[0] - 1
 
         # after deletion
         case "deletion":
@@ -45,8 +45,8 @@ def select_user(src: str, input_idx: int) -> None:
                 idx = None
 
             # deleted used was ABOVE active
-            elif input_idx <  st.session_state.user_idx:
-                idx = st.session_state.user_idx-1
+            elif input_idx < st.session_state.user_idx:
+                idx = st.session_state.user_idx - 1
 
             # deleted used was UNDER active
             elif input_idx > st.session_state.user_idx:
@@ -54,7 +54,7 @@ def select_user(src: str, input_idx: int) -> None:
 
             # deleted user was EQUAL active
             else:
-                nUser = len(st.session_state.user_db)-1
+                nUser = len(st.session_state.user_db) - 1
                 idx = input_idx if input_idx < nUser else nUser
 
         case _:
@@ -91,7 +91,7 @@ def load_db() -> pd.DataFrame:
     return db
 
 
-def add(name:str, height:int, target:int) -> None:
+def add(name: str, height: int, target: int) -> None:
     """
     Add a new user to the database and create a new CSV file for user measurements.
 
@@ -128,18 +128,25 @@ def add(name:str, height:int, target:int) -> None:
     st.session_state["new_usr_target"] = 80
 
     # new row for user
-    new_user = pd.DataFrame.from_records({
-        "name": name,
-        "height": height,
-        "target": target,
-        "trend_how": "date range",
-        "trend_start": datetime.now().date(),
-        "trend_range": 8
-    },index=[0])
+    new_user = pd.DataFrame.from_records(
+        {
+            "name": name,
+            "height": height,
+            "target": target,
+            "trend_how": "date range",
+            "trend_start": datetime.now().date(),
+            "trend_range": 8,
+        },
+        index=[0],
+    )
 
     # add row to users_db
-    st.session_state.user_db = pd.concat([st.session_state.user_db, new_user], ignore_index=True)
-    st.session_state.user_db["trend_start"] = pd.to_datetime(st.session_state.user_db["trend_start"])
+    st.session_state.user_db = pd.concat(
+        [st.session_state.user_db, new_user], ignore_index=True
+    )
+    st.session_state.user_db["trend_start"] = pd.to_datetime(
+        st.session_state.user_db["trend_start"]
+    )
 
     # save users.csv
     st.session_state.user_db.to_csv(os.path.join("data", "users.csv"), index=False)
@@ -175,8 +182,12 @@ def update_user() -> None:
     st.session_state.flags["usr_update_ok"] = True
 
     # update user_db and user_data in session_state
-    st.session_state.user_cm = st.session_state.user_db.loc[st.session_state.user_idx, "height"]
-    st.session_state.user_kg = st.session_state.user_db.loc[st.session_state.user_idx, "target"]
+    st.session_state.user_cm = st.session_state.user_db.loc[
+        st.session_state.user_idx, "height"
+    ]
+    st.session_state.user_kg = st.session_state.user_db.loc[
+        st.session_state.user_idx, "target"
+    ]
 
     # save users.csv
     st.session_state.user_db.to_csv(os.path.join("data", "users.csv"), index=False)
@@ -193,15 +204,21 @@ def update_trend() -> None:
     """
 
     # update user_db session_state
-    st.session_state.user_db.loc[st.session_state.user_idx, "trend_how"] = st.session_state.trend_how
-    st.session_state.user_db.loc[st.session_state.user_idx, "trend_start"] = pd.to_datetime(st.session_state.trend_start)
-    st.session_state.user_db.loc[st.session_state.user_idx, "trend_range"] = st.session_state.trend_range
+    st.session_state.user_db.loc[st.session_state.user_idx, "trend_how"] = (
+        st.session_state.trend_how
+    )
+    st.session_state.user_db.loc[st.session_state.user_idx, "trend_start"] = (
+        pd.to_datetime(st.session_state.trend_start)
+    )
+    st.session_state.user_db.loc[st.session_state.user_idx, "trend_range"] = (
+        st.session_state.trend_range
+    )
 
     # save users.csv
     st.session_state.user_db.to_csv(os.path.join("data", "users.csv"), index=False)
 
 
-def delete(idx: int|None) -> None:
+def delete(idx: int | None) -> None:
     """
     Deletes a user from the user database and removes their csv file.
 

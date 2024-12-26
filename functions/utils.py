@@ -75,9 +75,15 @@ def set_user_sessionstate(what: str) -> None:
         case "user":
             if st.session_state.user_idx is not None:
                 # user data
-                st.session_state.user_name = st.session_state.user_db.loc[st.session_state.user_idx, "name"]
-                st.session_state.user_cm = st.session_state.user_db.loc[st.session_state.user_idx, "height"]
-                st.session_state.user_kg = st.session_state.user_db.loc[st.session_state.user_idx, "target"]
+                st.session_state.user_name = st.session_state.user_db.loc[
+                    st.session_state.user_idx, "name"
+                ]
+                st.session_state.user_cm = st.session_state.user_db.loc[
+                    st.session_state.user_idx, "height"
+                ]
+                st.session_state.user_kg = st.session_state.user_db.loc[
+                    st.session_state.user_idx, "target"
+                ]
             else:
                 # when no user in user_db
                 st.session_state.user_name = "..."
@@ -87,9 +93,15 @@ def set_user_sessionstate(what: str) -> None:
         case "trend":
             if st.session_state.user_idx is not None:
                 # trend settings
-                st.session_state.trend_how = st.session_state.user_db.loc[st.session_state.user_idx, "trend_how"]
-                st.session_state.trend_start = st.session_state.user_db.loc[st.session_state.user_idx, "trend_start"]
-                st.session_state.trend_range = st.session_state.user_db.loc[st.session_state.user_idx, "trend_range"]
+                st.session_state.trend_how = st.session_state.user_db.loc[
+                    st.session_state.user_idx, "trend_how"
+                ]
+                st.session_state.trend_start = st.session_state.user_db.loc[
+                    st.session_state.user_idx, "trend_start"
+                ]
+                st.session_state.trend_range = st.session_state.user_db.loc[
+                    st.session_state.user_idx, "trend_range"
+                ]
             else:
                 # when no user in user_db
                 st.session_state.trend_how = "..."
@@ -123,15 +135,21 @@ def create_menu() -> None:
         index=st.session_state.user_idx,
         key="sb_user",
         on_change=user.select_user,
-        args=('sidebar', None),
-        placeholder="add new user" if len(st.session_state.user_db) == 0 else "select user"
+        args=("sidebar", None),
+        placeholder=(
+            "add new user" if len(st.session_state.user_db) == 0 else "select user"
+        ),
     )
     st.sidebar.divider()
 
     # pages
     st.sidebar.page_link("GravityLog.py", label=":material/trending_down: Graphs")
-    st.sidebar.page_link(os.path.join("pages", "measurements.py"), label=":material/notes: Measurements")
-    st.sidebar.page_link(os.path.join("pages", "manage_users.py"), label=":material/groups: Manage Users")
+    st.sidebar.page_link(
+        os.path.join("pages", "measurements.py"), label=":material/notes: Measurements"
+    )
+    st.sidebar.page_link(
+        os.path.join("pages", "manage_users.py"), label=":material/groups: Manage Users"
+    )
     st.sidebar.divider()
 
 
@@ -157,7 +175,7 @@ def default_style() -> None:
     st.markdown(css, unsafe_allow_html=True)
 
 
-def h_spacer(height:int=0, sb:bool=False) -> None:
+def h_spacer(height: int = 0, sb: bool = False) -> None:
     """
     Adds empty lines.
 
