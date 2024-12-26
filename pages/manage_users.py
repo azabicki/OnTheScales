@@ -31,7 +31,7 @@ edited_user = st.data_editor(
         ),
     },
     on_change=user.update_user,
-    key="user_edited"
+    key="user_edited",
 )
 
 # placeholder for feedback
@@ -53,13 +53,25 @@ with st.container(border=True):
     # height
     with col_hgt:
         height = st.slider(
-            "Height:", min_value=0, max_value=250, step=1, value=180, format="%d cm", key="new_usr_height"
+            "Height:",
+            min_value=0,
+            max_value=250,
+            step=1,
+            value=180,
+            format="%d cm",
+            key="new_usr_height",
         )
 
     # target weight
     with col_trgt:
         target = st.slider(
-            "Target Weight:", min_value=0, max_value=200, step=1, value=80, format="%d kg", key="new_usr_target"
+            "Target Weight:",
+            min_value=0,
+            max_value=200,
+            step=1,
+            value=80,
+            format="%d kg",
+            key="new_usr_target",
         )
 
     col_btn, col_fdb = st.columns([1, 2], gap="small")
@@ -69,7 +81,7 @@ with st.container(border=True):
             ":material/person_add: add new user",
             disabled=True if st.session_state.new_usr_name == "" else False,
             on_click=user.add,
-            args=(name, height, target)
+            args=(name, height, target),
         )
 
     # placeholder for feedback
@@ -97,20 +109,25 @@ with st.container(border=True):
             format_func=lambda i: usr_name[i],
             key="sb_user_delete",
             placeholder="...",
-            index=None
+            index=None,
         )
 
     # submit button inside a popover
     with col_del_btn:
         with st.popover(
-                "delete user",
-                use_container_width=True,
-                icon=":material/warning:",
-                disabled=True if st.session_state.sb_user_delete is None else False):
+            "delete user",
+            use_container_width=True,
+            icon=":material/warning:",
+            disabled=True if st.session_state.sb_user_delete is None else False,
+        ):
 
             # last question
-            st.subheader(f"Are you sure to delete _'{usr_name[st.session_state.sb_user_delete] if st.session_state.sb_user_delete is not None else ''}'_?")
-            st.caption(f"This is not reversible and all data will be lost! Maybe consider _copying_ your data first? It's all saved in the _'data/{st.session_state.user_name}.csv'_ file.")
+            st.subheader(
+                f"Are you sure to delete _'{usr_name[st.session_state.sb_user_delete] if st.session_state.sb_user_delete is not None else ''}'_?"
+            )
+            st.caption(
+                f"This is not reversible and all data will be lost! Maybe consider _copying_ your data first? It's all saved in the _'data/{st.session_state.user_name}.csv'_ file."
+            )
 
             col_b1, col_b2 = st.columns([1, 1], gap="small")
             # abort button
@@ -121,8 +138,8 @@ with st.container(border=True):
                     type="secondary",
                     use_container_width=True,
                     on_click=user.delete,
-                    args=(None, ),
-                    disabled=True if st.session_state.sb_user_delete is None else False
+                    args=(None,),
+                    disabled=True if st.session_state.sb_user_delete is None else False,
                 )
             # delete button !
             with col_b2:
@@ -132,8 +149,8 @@ with st.container(border=True):
                     icon=":material/delete:",
                     use_container_width=True,
                     on_click=user.delete,
-                    args=(st.session_state.sb_user_delete, ),
-                    disabled=True if st.session_state.sb_user_delete is None else False
+                    args=(st.session_state.sb_user_delete,),
+                    disabled=True if st.session_state.sb_user_delete is None else False,
                 )
 
     # placeholder for feedback

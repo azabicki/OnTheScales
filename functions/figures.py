@@ -7,7 +7,6 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from sklearn.linear_model import LinearRegression as LinReg
 
-
 # dictionary of colors
 clrs = {
     "weight": "#2E4057",
@@ -19,7 +18,7 @@ clrs = {
 }
 
 
-def main() -> go.Figure|None:
+def main() -> go.Figure | None:
     """
     Main function to generate the primary weight tracking figure.
 
@@ -81,25 +80,17 @@ def main() -> go.Figure|None:
     fig.update_layout(
         # height of figure
         height=420,
-
         # hovering
         hovermode="x unified",
-        hoverlabel=dict(
-            font_size=12,
-            bgcolor="#fefefe"),
+        hoverlabel=dict(font_size=12, bgcolor="#fefefe"),
         hoverdistance=1,
-
         # title
         title=dict(
             text="Chronology of Mass",
             automargin=True,
         ),
-
         # margin
-        margin=dict(
-            l=0, r=0, t=55, b=0
-        ),
-
+        margin=dict(l=0, r=0, t=55, b=0),
         # legend
         legend=dict(
             orientation="v",
@@ -110,7 +101,7 @@ def main() -> go.Figure|None:
             x=1,
             itemclick=False,
             traceorder="reversed",
-        )
+        ),
     )
 
     # Set x/y-axes properties
@@ -150,7 +141,7 @@ def main() -> go.Figure|None:
     return fig
 
 
-def trend() -> tuple[go.Figure|None, float]:
+def trend() -> tuple[go.Figure | None, float]:
     """
     Function to calculate and visualize weight trends and predictions.
 
@@ -287,7 +278,7 @@ def trend() -> tuple[go.Figure|None, float]:
     fig.add_trace(
         go.Scatter(
             x=pred_date,
-            y=pred_weight[:, ],
+            y=pred_weight[:,],
             name="prediction",
             mode="lines",
             line_width=3,
@@ -334,21 +325,14 @@ def trend() -> tuple[go.Figure|None, float]:
     fig.update_layout(
         # height of figure
         height=350,
-
         # turn legend off
         showlegend=False,
-
         # hovering
         hovermode="x unified",
-        hoverlabel=dict(
-            font_size=12,
-            bgcolor="#fefefe"),
+        hoverlabel=dict(font_size=12, bgcolor="#fefefe"),
         hoverdistance=1,
-
         # margin
-        margin=dict(
-            l=0, r=0, t=0, b=0
-        ),
+        margin=dict(l=0, r=0, t=0, b=0),
     )
 
     # set x/y-axes properties
@@ -364,7 +348,7 @@ def trend() -> tuple[go.Figure|None, float]:
     return fig, trnd
 
 
-def body_comp() -> go.Figure|None:
+def body_comp() -> go.Figure | None:
     """
     Function to visualize the body composition over time.
 
@@ -436,7 +420,6 @@ def body_comp() -> go.Figure|None:
                 )
             )
 
-
     # add _weight_ & _target_
     if st.session_state["fig_body_comp_weight"] == "weight & target":
         if second_y:
@@ -506,24 +489,15 @@ def body_comp() -> go.Figure|None:
                 )
             )
 
-
     # set some layout properties
     fig.update_layout(
         # height of figure
         height=370,
-
         # hovering
         hovermode="x unified",
-        hoverlabel=dict(
-            font_size=12,
-            bgcolor="#fefefe"),
-
+        hoverlabel=dict(font_size=12, bgcolor="#fefefe"),
         # margin
-        margin=dict(
-            l=0, r=0, t=0, b=0,
-            pad=4
-        ),
-
+        margin=dict(l=0, r=0, t=0, b=0, pad=4),
         # legend
         legend=dict(
             orientation="h",
@@ -533,11 +507,11 @@ def body_comp() -> go.Figure|None:
             font_size=10,
             valign="bottom",
             xanchor="center",
-            x=.5,
+            x=0.5,
             yanchor="top",
             y=-0.1,
             itemclick=False,
-        )
+        ),
     )
 
     # Set x/y-axes properties
