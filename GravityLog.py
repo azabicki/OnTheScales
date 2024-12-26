@@ -19,27 +19,35 @@ with col_title[1]:
     if goto_measurement:
         ut.switch_page("measurements")
 
-# ----- main figure -----
-with st.container(border=True):
-    # create figure
-    fig_chrono = fgs.main()
 
-    # draw and show figure
-    if fig_chrono is None:
-        st.markdown("_No measurements stored yet._")
-    else:
-        st.plotly_chart(
-            fig_chrono,
-            use_container_width=True,
-            config={"displayModeBar": False},
-            key="fig_chrono",
+# ----- main figure -----
+# create fragment 4 main_figure
+@st.fragment()
+def fragment_main_figure():
+    with st.container(border=True):
+        # create figure
+        fig_chrono = fgs.main()
+
+        # draw and show figure
+        if fig_chrono is None:
+            st.markdown("_No measurements stored yet._")
+        else:
+            st.plotly_chart(
+                fig_chrono,
+                use_container_width=True,
+                config={"displayModeBar": False},
+                key="fig_chrono",
+            )
+
+        # add selectbox for figure styling
+        st.divider()
+        st.segmented_control(
+            "data style:", options=["lines", "markers", "both"], key="fig_main_style"
         )
 
-    # add selectbox for figure styling
-    st.divider()
-    st.segmented_control(
-        "data style:", options=["lines", "markers", "both"], key="fig_main_style"
-    )
+
+# run main figure fragment
+fragment_main_figure()
 
 # ----- trend figure -----
 ut.h_spacer(1)
