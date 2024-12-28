@@ -86,11 +86,11 @@ def main() -> go.Figure | None:
         hoverdistance=1,
         # title
         title=dict(
-            text="Chronology of Mass",
+            text="Weight Chronicles",
             automargin=True,
         ),
         # margin
-        margin=dict(l=0, r=0, t=55, b=0),
+        margin=dict(l=0, r=0, t=0, b=0),
         # legend
         legend=dict(
             orientation="v",
