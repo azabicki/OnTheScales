@@ -121,7 +121,7 @@ def create_menu() -> None:
     """
 
     # title
-    st.sidebar.title("GravityLog")
+    st.sidebar.markdown("# On<br>The<br>Scales", unsafe_allow_html=True)
     st.sidebar.divider()
 
     # user selectbox
@@ -143,7 +143,7 @@ def create_menu() -> None:
     st.sidebar.divider()
 
     # pages
-    st.sidebar.page_link("GravityLog.py", label=":material/trending_down: Graphs")
+    st.sidebar.page_link("OnTheScales.py", label=":material/trending_down: Graphs")
     st.sidebar.page_link(
         os.path.join("pages", "measurements.py"), label=":material/notes: Measurements"
     )
@@ -208,7 +208,7 @@ def switch_page(page_name: str):
         return name.lower().replace("_", " ")
 
     page_name = standardize_name(page_name)
-    pages = get_pages("GravityLog.py")  # OR whatever your main page is called
+    pages = get_pages("OnTheScales.py")  # OR whatever your main page is called
 
     for page_hash, config in pages.items():
         if standardize_name(config["page_name"]) == page_name:

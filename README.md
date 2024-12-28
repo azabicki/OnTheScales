@@ -1,8 +1,8 @@
-# GravityLog
+# OnTheScales
 
-This Streamlit application serves as a tool for tracking and managing body measurements over time. It enables users to record, visualize, and analyze weight and body composition metrics: weight along with body fat, water content, and muscle mass. _GravityLog_ is designed for individuals who want to monitor their body composition changes, whether for fitness goals, health monitoring, or weight management. While being comprehensive in its tracking capabilities, it maintains a straightforward and practical approach to data management and visualization.
+This Streamlit application serves as a tool for tracking and managing body measurements over time. It enables users to record, visualize, and analyze weight and body composition metrics: weight along with body fat, water content, and muscle mass. _OnTheScales_ is designed for individuals who want to monitor their body composition changes, whether for fitness goals, health monitoring, or weight management. While being comprehensive in its tracking capabilities, it maintains a straightforward and practical approach to data management and visualization.
 
---> check out [**GravityLog @ streamlit.app**](https://gravitylog.streamlit.app/) to see it in action!
+--> check out [**OnTheScales @ streamlit.app**](https://onthescales.streamlit.app/) to see it in action!
 
 ## Features
 
@@ -31,12 +31,12 @@ The interface aims to be straightforward and functional, focusing on providing u
 Clone this repository
 
 ```bash
-git clone https://github.com/azabicki/GravityLog
+git clone https://github.com/azabicki/OnTheScales
 ```
 
 ### virtual environment
 
-_GravityLog_ is written in `Python 3.11.2`.
+_OnTheScales_ is written in `Python 3.11.2`.
 
 #### venv
 Install a virtual environment according to your OS:
@@ -65,7 +65,7 @@ If you are using _*conda_, an environment.yml file is provided, which also insta
 
 ```bash
 conda env create -f environment.yml
-conda activate GravityLog
+conda activate OnTheScales
 ```
 
 ## Usage
@@ -73,16 +73,16 @@ conda activate GravityLog
 To start the app, run the following command:
 
 ```bash
-streamlit run GravityLog.py
+streamlit run OnTheScales.py
 ```
 
 The app will be available at http://localhost:8501.
 
-Using _GravityLog_ is straightforward. Simply select a user profile from the dropdown menu, and start tracking your body composition. You can also create multiple user profiles to track different persons.
+Using _OnTheScales_ is straightforward. Simply select a user profile from the dropdown menu, and start tracking your body composition. You can also create multiple user profiles to track different persons.
 
 ## Raspberry Pi
 
-_GravityLog_ can also be run on a Raspberry Pi, I did it on an older Raspberry Pi 3B+. The following steps are required to install and run _GravityLog_ on a Raspberry Pi:
+_OnTheScales_ can also be run on a Raspberry Pi, I did it on an older Raspberry Pi 3B+. The following steps are required to install and run _OnTheScales_ on a Raspberry Pi:
 
 ```bash
 python -m venv .venv
@@ -93,18 +93,18 @@ pip install -r requirements.txt
 
 ### autostart
 
-There is also script to start _GravityLog_ in the `misc/RaspPi` folder. It will start the app in the background and automatically start when the Raspberry Pi boots.
+There is also script to start _OnTheScales_ in the `misc/RaspPi` folder. It will start the app in the background and automatically start when the Raspberry Pi boots.
 
-In the following commands, first edit the `path` to the _GravityLog_ folder, and then run these in your bash console:
+In the following commands, first edit the `path` to the _OnTheScales_ folder, and then run these in your bash console:
 
 ```bash
-EDIT_THIS_PATH="/path/to/GravityLog"
+EDIT_THIS_PATH="/path/to/OnTheScales"
 
-chmod +x $EDIT_THIS_PATH/misc/RaspPi/autorun_gravitylog.sh
+chmod +x $EDIT_THIS_PATH/misc/RaspPi/autorun_OnTheScales.sh
 
-echo "# ----- autostart GravityLog after boot -----" >> ~/.bashrc
+echo "# ----- autostart OnTheScales after boot -----" >> ~/.bashrc
 echo "if [ \$(tty) == /dev/tty1 ]; then" >> ~/.bashrc
-echo "    $EDIT_THIS_PATH/misc/RaspPi/autorun_gravitylog.sh" >> ~/.bashrc
+echo "    $EDIT_THIS_PATH/misc/RaspPi/autorun_OnTheScales.sh" >> ~/.bashrc
 echo "fi" >> ~/.bashrc
 ```
 
