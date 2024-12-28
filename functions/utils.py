@@ -56,9 +56,6 @@ def init_vars() -> None:
         st.session_state.fig_body_comp_weight = None
         st.session_state.fig_body_comp_style = "lines"
 
-    if "debug" not in st.session_state:
-        st.session_state.debug = False
-
 
 def set_user_sessionstate(what: str) -> None:
     """
