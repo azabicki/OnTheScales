@@ -1,4 +1,4 @@
-name: GravityLog
+name: OnTheScales
 channels:
   - conda-forge
   - defaults

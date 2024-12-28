@@ -208,7 +208,7 @@ def switch_page(page_name: str):
         return name.lower().replace("_", " ")
 
     page_name = standardize_name(page_name)
-    pages = get_pages("GravityLog.py")  # OR whatever your main page is called
+    pages = get_pages("OnTheScales.py")  # OR whatever your main page is called
 
     for page_hash, config in pages.items():
         if standardize_name(config["page_name"]) == page_name:
