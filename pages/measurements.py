@@ -1,5 +1,4 @@
 import time
-import pandas as pd
 import streamlit as st
 import functions.utils as ut
 import functions.data as data
@@ -27,7 +26,7 @@ with st.container(border=True):
         if date < st.session_state.db["date"].min().date():
             idx_date = 0
         else:
-            dates = st.session_state.db["date"][::-1] <= pd.to_datetime(date)
+            dates = st.session_state.db["date"][::-1].dt.date <= date
             idx_date = dates.idxmax()
 
         # get values of last measurement before current date
@@ -79,7 +78,7 @@ with st.container(border=True):
             )
 
         # check if measurements for this day are already saved
-        if any(st.session_state.db["date"] == pd.to_datetime(date)):
+        if any(st.session_state.db["date"].dt.date == date):
             btn_add_upd_lbl = "**update** measurement"
             btn_add_upd_icn = ":material/update:"
             btn_del_disabled = False

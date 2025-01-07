@@ -56,9 +56,6 @@ def init_vars() -> None:
         st.session_state.fig_body_comp_weight = None
         st.session_state.fig_body_comp_style = "lines"
 
-    if "debug" not in st.session_state:
-        st.session_state.debug = False
-
 
 def set_user_sessionstate(what: str) -> None:
     """
@@ -211,7 +208,7 @@ def switch_page(page_name: str):
     pages = get_pages("OnTheScales.py")  # OR whatever your main page is called
 
     for page_hash, config in pages.items():
-        if standardize_name(config["page_name"]) == page_name:
+        if standardize_name(config.get("page_name", "")) == page_name:
             raise RerunException(
                 RerunData(
                     page_script_hash=page_hash,
@@ -219,5 +216,7 @@ def switch_page(page_name: str):
                 )
             )
 
-    page_names = [standardize_name(config["page_name"]) for config in pages.values()]
+    page_names = [
+        standardize_name(config.get("page_name", "")) for config in pages.values()
+    ]
     raise ValueError(f"Could not find page {page_name}. Must be one of {page_names}")
