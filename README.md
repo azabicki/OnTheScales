@@ -64,7 +64,7 @@ pip install -r requirements.txt
 If you are using _*conda_, an environment.yml file is provided, which also installs the required python version `3.11.2`:
 
 ```bash
-conda env create -f environment.yml
+conda env create -f conda_environment.yml
 conda activate OnTheScales
 ```
 
