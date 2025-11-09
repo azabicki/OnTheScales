@@ -41,8 +41,15 @@ def fragment_main_figure():
 
         # add selectbox for figure styling
         st.divider()
-        st.segmented_control(
+        col_main = st.columns([1, 1], gap="small")
+        col_main[0].segmented_control(
             "data style:", options=["lines", "markers", "both"], key="fig_main_style"
+        )
+        col_main[1].segmented_control(
+            "smoothing:",
+            default=None,
+            options=["5-day EMA", "10-day cMA", "Spline"],
+            key="fig_main_smoothing",
         )
 
 
@@ -63,10 +70,10 @@ with st.container(border=True):
         # show current change rate of weight
         c1, c2, c3 = st.columns([3, 2, 2])
         c1.markdown(
-            "**$\Delta$kg {txt}:**".format(
+            r"**$\Delta$kg {txt}:**".format(
                 txt=(
                     "since {date}".format(
-                        date=st.session_state.trend_start.date().strftime("%d.%m.%Y")
+                        date=st.session_state.trend_start.strftime("%d.%m.%Y")
                     )
                     if st.session_state.trend_how == "start date"
                     else "in last {weeks} weeks".format(

@@ -24,6 +24,12 @@ This Streamlit application serves as a tool for tracking and managing body measu
 - Basic user administration (add, edit, delete)
 - Data persistence through CSV files
 
+**Withings Integration:**
+- Connect to Withings smart scales for automatic data sync
+- OAuth2 authentication with automatic token refresh
+- Selective import of measurements with date tracking
+- Support for weight, body fat, water, and muscle mass data
+
 The interface aims to be straightforward and functional, focusing on providing useful information without unnecessary complexity. As the application runs entirely on your local machine, all data remains under your control and is stored locally in simple CSV files. This ensures complete data privacy while maintaining easy access to your data for backup or external analysis if desired.
 
 ## Installation
@@ -79,6 +85,17 @@ streamlit run OnTheScales.py
 The app will be available at http://localhost:8501.
 
 Using _OnTheScales_ is straightforward. Simply select a user profile from the dropdown menu, and start tracking your body composition. You can also create multiple user profiles to track different persons.
+
+### Withings Integration Setup
+
+To connect your Withings smart scale:
+
+1. **Create a Withings App**: Visit the [Withings Developer Portal](https://developer.withings.com/) and create a new app
+2. **Configure Credentials**: Set up your API credentials in `.streamlit/secrets.toml` (see `WITHINGS_SETUP.md` for detailed instructions)
+3. **Connect Users**: Go to "Manage Users" page and connect each user to their Withings account
+4. **Sync Data**: Use the "Measurements" page to fetch and selectively import Withings data
+
+For detailed setup instructions, see [WITHINGS_SETUP.md](WITHINGS_SETUP.md).
 
 ## Raspberry Pi
 

@@ -23,14 +23,17 @@ def init_vars() -> None:
             "data_del": False,
             "usr_add_ok": False,
             "usr_add_exists": False,
+            "usr_add_exists_name": "",
             "usr_update_ok": False,
             "usr_del_ok": False,
+            "usr_del_name": "",
         }
 
     # load user database
     if "user_db" not in st.session_state:
-        st.session_state.user_db = user.load_db()
-        if st.session_state.user_db.shape[0] == 0:
+        st.session_state.user_db = user.load_db()  # Keep DataFrame for compatibility
+        users_dict = user.load_users_dict()
+        if len(users_dict) == 0:
             st.session_state.user_idx = None
         else:
             st.session_state.user_idx = 0
@@ -52,6 +55,7 @@ def init_vars() -> None:
 
     if "fig_main_style" not in st.session_state:
         st.session_state.fig_main_style = "lines"
+        st.session_state.fig_main_smoothing = None
         st.session_state.fig_body_comp_type = "%"
         st.session_state.fig_body_comp_weight = None
         st.session_state.fig_body_comp_style = "lines"
@@ -70,40 +74,42 @@ def set_user_sessionstate(what: str) -> None:
 
     match what:
         case "user":
-            if st.session_state.user_idx is not None:
+            # Get users dictionary for efficient access
+            users_dict = user.load_users_dict()
+            user_names = list(users_dict.keys())
+
+            if (
+                st.session_state.user_idx is not None
+                and st.session_state.user_idx < len(user_names)
+            ):
                 # user data
-                st.session_state.user_name = st.session_state.user_db.loc[
-                    st.session_state.user_idx, "name"
-                ]
-                st.session_state.user_cm = st.session_state.user_db.loc[
-                    st.session_state.user_idx, "height"
-                ]
-                st.session_state.user_kg = st.session_state.user_db.loc[
-                    st.session_state.user_idx, "target"
-                ]
+                current_user = user_names[st.session_state.user_idx]
+                user_data = users_dict[current_user]
+                st.session_state.user_name = user_data["name"]
             else:
                 # when no user in user_db
                 st.session_state.user_name = "..."
-                st.session_state.user_cm = None
-                st.session_state.user_kg = None
 
         case "trend":
-            if st.session_state.user_idx is not None:
+            # Get users dictionary for efficient access
+            users_dict = user.load_users_dict()
+            user_names = list(users_dict.keys())
+
+            if (
+                st.session_state.user_idx is not None
+                and st.session_state.user_idx < len(user_names)
+            ):
                 # trend settings
-                st.session_state.trend_how = st.session_state.user_db.loc[
-                    st.session_state.user_idx, "trend_how"
-                ]
-                st.session_state.trend_start = st.session_state.user_db.loc[
-                    st.session_state.user_idx, "trend_start"
-                ]
-                st.session_state.trend_range = st.session_state.user_db.loc[
-                    st.session_state.user_idx, "trend_range"
-                ]
+                current_user = user_names[st.session_state.user_idx]
+                user_data = users_dict[current_user]
+                st.session_state.trend_how = user_data["trend_how"]
+                st.session_state.trend_start = user_data["trend_start"]
+                st.session_state.trend_range = user_data["trend_range"]
             else:
                 # when no user in user_db
-                st.session_state.trend_how = "..."
-                st.session_state.trend_start = "..."
-                st.session_state.trend_range = "..."
+                st.session_state.trend_how = "date range"
+                st.session_state.trend_start = None
+                st.session_state.trend_range = 8
 
 
 def create_menu() -> None:
@@ -118,12 +124,14 @@ def create_menu() -> None:
     """
 
     # title
-    st.sidebar.markdown("# On<br>The<br>Scales", unsafe_allow_html=True)
+    st.sidebar.markdown("# Bouski<br>On<br>The<br>Scales", unsafe_allow_html=True)
     st.sidebar.divider()
 
     # user selectbox
-    usr_idx = [i for i, _ in st.session_state.user_db.iterrows()]
-    usr_name = [r["name"] for i, r in st.session_state.user_db.iterrows()]
+    users_dict = user.load_users_dict()
+    user_names = list(users_dict.keys())
+    usr_idx = list(range(len(user_names)))
+    usr_name = user_names
 
     st.sidebar.selectbox(
         "select user:",
@@ -132,10 +140,8 @@ def create_menu() -> None:
         index=st.session_state.user_idx,
         key="sb_user",
         on_change=user.select_user,
-        args=("sidebar", None),
-        placeholder=(
-            "add new user" if len(st.session_state.user_db) == 0 else "select user"
-        ),
+        args=("sidebar",),
+        placeholder=("add new user" if len(user_names) == 0 else "select user"),
     )
     st.sidebar.divider()
 
@@ -145,7 +151,8 @@ def create_menu() -> None:
         os.path.join("pages", "measurements.py"), label=":material/notes: Measurements"
     )
     st.sidebar.page_link(
-        os.path.join("pages", "manage_users.py"), label=":material/groups: Manage Users"
+        os.path.join("pages", "manage_users.py"),
+        label=":material/groups: Manage User/s",
     )
     st.sidebar.divider()
 
