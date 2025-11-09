@@ -1,0 +1,33 @@
+[
+  {
+    "name": "mock",
+    "height": 180,
+    "target": 72,
+    "trend_how": "start date",
+    "trend_start": "2024-09-01",
+    "trend_range": 12,
+    "measure_types": [
+      {
+        "name": "Weight",
+        "unit": "kg",
+        "decimals": 2
+      },
+      {
+        "name": "Fat",
+        "unit": "%",
+        "decimals": 1
+      },
+      {
+        "name": "Water",
+        "unit": "%",
+        "decimals": 1
+      },
+      {
+        "name": "Muscle",
+        "unit": "%",
+        "decimals": 1
+      }
+    ],
+    "imported_dates": []
+  }
+]

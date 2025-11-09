@@ -1,159 +1,59 @@
-import time
 import streamlit as st
 import functions.utils as ut
-import functions.data as data
+import functions.user as user
+import functions.ui_components as ui
+from withings.ui_components import (
+    show_connection_status,
+    show_data_load_interface,
+    show_data_sync_interface,
+    show_authentication_interface,
+)
 
 ut.init_vars()
 ut.default_style()
 ut.create_menu()
 
-# manage measurement ---------------------------------------------------------
 st.subheader("Manage Measurements")
-with st.container(border=True):
-    # get date first
-    date = st.date_input("Date", "today", format="DD.MM.YYYY")
 
-    # get measurements to fill in form
-    if st.session_state.db.shape[0] == 0:
-        # if database is empty, use default values
-        value_wgt = 80.0
-        value_fat = 25.0
-        value_h2o = 50.0
-        value_msc = 25.0
+# ----- if user selected ---------------------------------------------------
+users_dict = user.load_users_dict()
+if users_dict and st.session_state.user_idx is not None:
+    # Get the current user
+    current_user = st.session_state.user_name
+
+    # ----- add/update measurements ---------------------------------------------------
+    ui.manage_measurements()
+
+    # ----- display measurements ---------------------------------------------------
+    ut.h_spacer(2)
+    ui.display_measurements()
+
+    # ----- Withings Data Sync ----------------------
+    ut.h_spacer(2)
+    st.subheader("Withings Data Import")
+
+    # Check if user is selected
+    with st.container(border=True):
+        current_user = st.session_state.user_name
+
+        # Show connection status
+        status = show_connection_status(current_user)
+
+        if status["connected"]:
+            # User is connected - show data fetch and sync interface
+            show_data_load_interface(current_user)
+            show_data_sync_interface(current_user)
+        elif status["configured"]:
+            # Credentials configured but user not connected
+            show_authentication_interface(current_user)
+        else:
+            st.warning(
+                "Withings API credentials not configured. Check .streamlit/secrets.toml !"
+            )
+
+# ----- no user selected ---------------------------------------------------
+else:
+    if not users_dict:
+        st.info("No users found. Add a user below to get started.")
     else:
-        # else get last measurements before current date
-        # find index of last measurement before current date
-        if date < st.session_state.db["date"].min().date():
-            idx_date = 0
-        else:
-            dates = st.session_state.db["date"][::-1].dt.date <= date
-            idx_date = dates.idxmax()
-
-        # get values of last measurement before current date
-        value_wgt = st.session_state.db.loc[idx_date, "weight"]
-        value_fat = st.session_state.db.loc[idx_date, "fat"]
-        value_h2o = st.session_state.db.loc[idx_date, "water"]
-        value_msc = st.session_state.db.loc[idx_date, "muscle"]
-
-    # create form to fill in measurements
-    with st.form("data_entry", border=False):
-        # measurements fields
-        col_wgt, col_fat = st.columns([1, 1], gap="small")
-        with col_wgt:
-            wgt = st.number_input(
-                "Weight [kg]:",
-                value=value_wgt,
-                min_value=0.0,
-                max_value=200.0,
-                step=0.1,
-                format="%.1f",
-            )
-        with col_fat:
-            fat = st.number_input(
-                "Fat [%]:",
-                value=value_fat,
-                min_value=0.0,
-                max_value=100.0,
-                step=0.1,
-                format="%.1f",
-            )
-        col_h20, col_msc = st.columns([1, 1], gap="small")
-        with col_h20:
-            h2o = st.number_input(
-                "Water [%]:",
-                value=value_h2o,
-                min_value=0.0,
-                max_value=100.0,
-                step=0.1,
-                format="%.1f",
-            )
-        with col_msc:
-            msc = st.number_input(
-                "Muscle [%]:",
-                value=value_msc,
-                min_value=0.0,
-                max_value=100.0,
-                step=0.1,
-                format="%.1f",
-            )
-
-        # check if measurements for this day are already saved
-        if any(st.session_state.db["date"].dt.date == date):
-            btn_add_upd_lbl = "**update** measurement"
-            btn_add_upd_icn = ":material/update:"
-            btn_del_disabled = False
-        else:
-            btn_add_upd_lbl = "**add new** measurement"
-            btn_add_upd_icn = ":material/add_circle:"
-            btn_del_disabled = True
-
-        # submit button
-        col_btn_add_upd, col_fdb_add_upd = st.columns([2, 3], gap="small")
-        with col_btn_add_upd:
-            submitted_add_upd = st.form_submit_button(
-                label=btn_add_upd_lbl, icon=btn_add_upd_icn
-            )
-        with col_fdb_add_upd:
-            container_add_upd = st.empty()
-
-    # delete button and feedback
-    col_btn_del, col_fdb_del = st.columns([2, 3], gap="small")
-    with col_btn_del:
-        submitted_del = st.button(
-            label="**delete** measurement",
-            icon=":material/delete:",
-            disabled=btn_del_disabled,
-        )
-    with col_fdb_del:
-        container_del = st.empty()
-
-    # handle ADDING/UPDATING
-    if submitted_add_upd:
-        # add data entry
-        data.add_update(date, wgt, fat, h2o, msc)
-        # rerun 4 feedback
-        st.rerun()
-
-    # handle DELETION
-    if submitted_del:
-        # delete entry
-        data.delete(date)
-        # rerun 4 feedback
-        st.rerun()
-
-# overview database entries -----------------------------------------------
-ut.h_spacer(2)
-st.subheader("All Measurements")
-st.dataframe(
-    st.session_state.db.sort_values(by="date", ascending=False),
-    use_container_width=True,
-    hide_index=True,
-    column_config={
-        "date": st.column_config.DateColumn(
-            label="Date", format="DD.MM.YYYY", pinned=True
-        ),
-        "weight": st.column_config.NumberColumn(label="Weight", format="%.1f kg"),
-        "fat": st.column_config.NumberColumn(label="% Fat", format="%.1f %%"),
-        "water": st.column_config.NumberColumn(label="% Water", format="%.1f %%"),
-        "muscle": st.column_config.NumberColumn(label="% Muscle", format="%.1f %%"),
-    },
-)
-
-# display messages ----------------------
-if st.session_state.flags["data_add"]:
-    st.session_state.flags["data_add"] = False
-    container_add_upd.success("new entry **added**", icon=":material/add_circle:")
-    time.sleep(2)
-    container_add_upd.empty()
-
-if st.session_state.flags["data_upd"]:
-    st.session_state.flags["data_upd"] = False
-    container_add_upd.success("old entry **updated**", icon=":material/update:")
-    time.sleep(2)
-    container_add_upd.empty()
-
-if st.session_state.flags["data_del"]:
-    st.session_state.flags["data_del"] = False
-    container_del.success("entry **deleted**", icon=":material/delete:")
-    time.sleep(2)
-    container_del.empty()
+        st.info("Please select a user from the sidebar to edit their data.")
